@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using WLC.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WLC.Models;
 
 namespace WLC
 {
@@ -38,8 +39,14 @@ namespace WLC
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<WLCRacesContext>(options =>
+        options.UseSqlServer(
+            Configuration.GetConnectionString("WLCConnection")));
+
+
             services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+                    .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
