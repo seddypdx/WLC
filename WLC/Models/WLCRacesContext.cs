@@ -66,9 +66,7 @@ namespace WLC.Models
             {
                 entity.HasKey(e => e.RacerId);
 
-                entity.Property(e => e.RacerId)
-                    .HasColumnName("Racer ID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.RacerId).HasColumnName("Racer ID");
 
                 entity.Property(e => e.Birthdate).HasColumnType("datetime");
 
@@ -134,9 +132,7 @@ namespace WLC.Models
             {
                 entity.HasKey(e => e.ResultId);
 
-                entity.Property(e => e.ResultId)
-                    .HasColumnName("Result ID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.ResultId).HasColumnName("Result ID");
 
                 entity.Property(e => e.Comments).HasMaxLength(50);
 

@@ -1,0 +1,18 @@
+﻿@model IQueryable<WLC.Models.Racers>  
+@{
+   // @Layout = null;
+}
+
+<div id="cardList">
+    @foreach (var racer in Model)
+    {
+        <div class="card w-50 bg-primary text-white mb-3">
+
+            <div class="card-body">
+                <h7 class="card-title"> <a asp-route-racerId="@racer.RacerId" asp-route-raceId="@ViewData["RaceId"]" class="text-white">@racer.LastName, @racer.FirstName (@racer.Age)</a></h7>
+                <p>@racer.Cabin.CabinName</p>
+            </div>
+        </div>
+    }
+</div>
+           
