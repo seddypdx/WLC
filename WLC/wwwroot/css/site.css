@@ -59,3 +59,25 @@ body {
 .entrants-positions span {
    padding-right:10px;
 }
+
+.place_1 {
+    background-color:darkblue;
+}
+
+.place_2 {
+    background-color: darkred;
+}
+
+.place_3 {
+    background-color: papayawhip;
+}
+
+.place_3 p {
+    color: black;
+}
+
+
+
+.place_4 {
+    background-color: rebeccapurple;
+}

@@ -63,6 +63,31 @@ function RemoveRacerFromRace(racerId, raceId) {
 
 }
 
+
+function SetRacerPosition(racerId, raceId, place) {
+
+    $.ajax({
+        type: "GET",
+        url: "/Races/Result/?handler=SetRacerPosition&racerId=" + racerId + "&raceId=" + raceId + "&place=" + place,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.error === false) {
+                loadEntrants(raceId);
+            }
+
+        },
+        failure: function (response) {
+            alert(response);
+        }
+    });
+
+    this.event.stopPropagation();
+
+    return true;
+
+}
+
 function loadEntrants(raceId) {
     $('#gridEntrant').load('/Races/Result?handler=EntrantsPartial&raceId=' + raceId);
 

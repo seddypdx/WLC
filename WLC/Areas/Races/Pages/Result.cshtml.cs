@@ -45,7 +45,7 @@ namespace WLC.Areas.Races.Pages
             {
                 var result = new Results()
                 {
-                    Place = 1,
+                    Place = 4,
                     TeamId =1,
                     RaceId = ActiveRaceId,
                     RacerId = racerId,
@@ -140,7 +140,7 @@ namespace WLC.Areas.Races.Pages
 
                 var result = new Results()
                 {
-                    Place = 1,
+                    Place = 4,
                     TeamId = 1,
                     RaceId = raceId,
                     RacerId = racerId,
@@ -157,6 +157,29 @@ namespace WLC.Areas.Races.Pages
                 return new JsonResult(new { error = true, message = "Adding Racer Failed" });
 
             }
+        }
+
+        public IActionResult OnGetSetRacerPosition([FromQuery] int racerId, int raceId, int place)
+        {
+
+            try
+            {
+
+                var result = _context.Results.FirstOrDefault(x => x.Year == 2019 && x.RacerId == racerId && x.RaceId == raceId);
+                result.Place = place;
+                _context.Update(result);
+                _context.SaveChanges();
+                return new JsonResult(new { error = false, message = "Racer updated" });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { error = true, message = "Error Removing." + ex.Message });
+
+            }
+
+
+
         }
 
         public IActionResult OnGetRemoveRacer([FromQuery] int racerId, int raceId)
