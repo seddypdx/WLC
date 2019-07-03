@@ -15,7 +15,7 @@
                         <option value="">(select one)</option>
                     </select>
                 </div>
-             </div>
+            </div>
 
         </form>
         <div class="row">
@@ -51,19 +51,11 @@
     </div>
 
     @section scripts{
-        <script>
-            $(function () {
-                $('#load').on('click', function () {
-                    $('#gridEntrant').load('/Races/Result?handler=EntrantsPartial&raceId=@Model.ActiveRaceId');
-                    $('#gridQualified').load('/Races/Result?handler=QualifiedPartial&raceId=@Model.ActiveRaceId');
+        <link href="~/js/results.js" type="text/javascript" asp-append-version="true" />
 
-                });
-            });
-
-</script>
-        }
+    }
 
 
-    </div>
+</div>
 
 

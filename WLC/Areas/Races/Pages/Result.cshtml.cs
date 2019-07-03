@@ -125,5 +125,34 @@ namespace WLC.Areas.Races.Pages
                 ViewData = new ViewDataDictionary<IQueryable<Racers>>(ViewData, AvailableRacers)
             };
         }
+
+        public PartialViewResult OnGetEnterRacer(int raceId, int racerId)
+        {
+
+            if (racerId > 0)
+            {
+                var result = new Results()
+                {
+                    Place = 1,
+                    TeamId = 1,
+                    RaceId = raceId,
+                    RacerId = racerId,
+                    Year = 2019
+
+                };
+                _context.Results.Add(result);
+                _context.SaveChanges();
+            }
+
+            ViewData["RaceId"] = raceId;
+
+            SetupDetails();
+
+            return new PartialViewResult
+            {
+                ViewName = "_ResultEntrants",
+                ViewData = new ViewDataDictionary<IQueryable<Results>>(ViewData, Results)
+            };
+        }
     }
 }
