@@ -72,19 +72,21 @@ namespace WLC.Areas.Races.Pages
 
         private void SetupDetails()
         {
-            AvailableRacers = _context.Racers
-                                       .Where(x => x.Age >= ActiveRace.MinimumAge
-                                            && x.Age <= ActiveRace.MaximumAge
-                                            && (x.BoyOrGirl == ActiveRace.RaceBoyOrGirl || ActiveRace.RaceBoyOrGirl == "b/g") )
-                                        .Include(x => x.Cabin)
 
-                                            .OrderBy(x => x.LastName);
 
             Results = _context.Results.Where(x => x.Year == 2019 && x.RaceId == ActiveRaceId)
                                       .Include(x => x.Racer).ThenInclude(x => x.Cabin)
                                       .OrderBy(x => x.Place);
 
 
+            AvailableRacers = _context.Racers
+                           .Where(x => x.Age >= ActiveRace.MinimumAge
+                                && x.Age <= ActiveRace.MaximumAge
+                                && (x.BoyOrGirl == ActiveRace.RaceBoyOrGirl || ActiveRace.RaceBoyOrGirl == "b/g")
+                                && !_context.Results.Any(p => p.RaceId==ActiveRace.RaceId && p.RacerId == x.RacerId)
+                                )
+                            .Include(x => x.Cabin)
+                            .OrderBy(x => x.LastName);
         }
 
         public PartialViewResult OnGetEntrantsPartial(int raceId)
@@ -126,11 +128,16 @@ namespace WLC.Areas.Races.Pages
             };
         }
 
-        public PartialViewResult OnGetEnterRacer(int raceId, int racerId)
+        #region ajaxhandlers
+
+        public IActionResult OnGetEnterRacer([FromQuery] int racerId, int raceId)
         {
 
-            if (racerId > 0)
+            try
             {
+                if (racerId == 0)
+                    throw new Exception("Invalid Race");
+
                 var result = new Results()
                 {
                     Place = 1,
@@ -142,17 +149,39 @@ namespace WLC.Areas.Races.Pages
                 };
                 _context.Results.Add(result);
                 _context.SaveChanges();
+                return new JsonResult(new { error = false, message = "RacerAdded" });
+
+            }
+            catch(Exception ex)
+            {
+                return new JsonResult(new { error = true, message = "Adding Racer Failed" });
+
+            }
+        }
+
+        public IActionResult OnGetRemoveRacer([FromQuery] int racerId, int raceId)
+        {
+
+            try
+            {
+     
+                var result = _context.Results.FirstOrDefault(x => x.Year==2019 && x.RacerId == racerId && x.RaceId==raceId);
+                _context.Remove(result);
+                _context.SaveChanges();
+                return new JsonResult(new { error = false, message = "Racer Removed" });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { error = true, message = "Error Removing." + ex.Message });
+
             }
 
-            ViewData["RaceId"] = raceId;
 
-            SetupDetails();
 
-            return new PartialViewResult
-            {
-                ViewName = "_ResultEntrants",
-                ViewData = new ViewDataDictionary<IQueryable<Results>>(ViewData, Results)
-            };
         }
+
+        #endregion
+
     }
 }

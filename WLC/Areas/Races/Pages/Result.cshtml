@@ -32,8 +32,7 @@
                 <h6>Selections</h6>
                 <p>
                     <input type="text" id="myFilter" onkeyup="filterCards()" placeholder="Search for names.." />
-                <p><button class="btn btn-primary" id="load">Load</button></p>
-                <div id="gridQualified">
+                 <div id="gridQualified">
                     <partial name="_ResultQualified" model="@Model.AvailableRacers" />
                 </div>
                 </p>
@@ -51,7 +50,7 @@
     </div>
 
     @section scripts{
-        <link href="~/js/results.js" type="text/javascript" asp-append-version="true" />
+        <script src="~/js/results.js" asp-append-version="true"></script>
 
     }
 

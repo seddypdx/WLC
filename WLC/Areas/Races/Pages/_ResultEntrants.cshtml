@@ -1,19 +1,36 @@
 ﻿@model IQueryable<WLC.Models.Results>  
 @{
-   // @Layout = null;
+// @Layout = null;
 }
 
 <div id="cardList">
+    @if (Model != null)
+    {
     @foreach (var result in Model)
     {
-        <div class="card w-50 bg-secondary text-white mb-3">
+    <div class="card w-50 bg-secondary text-white mb-3">
+   
 
-            <div class="card-body">
-                <h7 class="card-title"> <a asp-route-racerId="@result.RacerId" asp-route-raceId="@ViewData["RaceId"]" class="text-white">@result.Racer.LastName, @result.Racer.FirstName (@result.Racer.Age)</a></h7>
+        <div class="card-body">
+            <div>
+                <button type="button" onclick='return RemoveRacerFromRace(@result.Racer.RacerId,@ViewData["RaceId"])' class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div >
+                @result.Racer.LastName, @result.Racer.FirstName (@result.Racer.Age)
                 <p>@result.Racer.Cabin.CabinName</p>
             </div>
+            <div class="entrants-positions">
+                <input name="position_@result.RacerId" type="radio" /><span>1st</span>
+                <input name="position_@result.RacerId" type="radio" /><span>2nd</span>
+                <input name="position_@result.RacerId" type="radio" /><span>3rd</span>
+                <input name="position_@result.RacerId" type="radio" /><span>++</span>
+            </div>
         </div>
+    </div>
     }
- 
+    }
+
 </div>
            

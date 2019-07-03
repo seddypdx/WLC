@@ -1,33 +1,75 @@
 ﻿
-$(function () {
-    $('.EnterRacer').on('click', function () {
+//$(function () {
+//    $('.EnterRacer').on('click', function (event) {
+//        event.cancelDefault();
+//        event.stopPropagation();
+//      //  $('#gridEntrant').load('<%=Url.Action("EnterRacer", "YourController")%>', new { catID =  tree.CategoryCode, langID= 1 }, null);
+//        $('#gridEntrant').load(this.href);
+//      //  loadEntrants();
+//      //  loadQualified();
+//        return false();
+//    });
+//});
 
-      //  $('#gridEntrant').load('<%=Url.Action("EnterRacer", "YourController")%>', new { catID =  tree.CategoryCode, langID= 1 }, null);
-        $('#gridEntrant').load(this.href);
-        return false();
+
+
+function AddRacerToRace(racerId, raceId) {
+   
+    $.ajax({
+        type: "GET",
+        url: "/Races/Result/?handler=EnterRacer&racerId="+ racerId + "&raceId=" + raceId,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.error === false) {
+                 loadEntrants(raceId);
+                 loadQualified(raceId);
+            }
+
+        },
+        failure: function (response) {
+            alert(response);
+        }
     });
-});
 
+    this.event.stopPropagation();
 
+    return false;
+  
+}
 
-$(function () {
-    $('#load').on('click', function () {
-        loadEntrants();
-        loadQualified();
+function RemoveRacerFromRace(racerId, raceId) {
+
+    $.ajax({
+        type: "GET",
+        url: "/Races/Result/?handler=RemoveRacer&racerId=" + racerId + "&raceId=" + raceId,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.error === false) {
+                loadEntrants(raceId);
+                loadQualified(raceId);
+            }
+
+        },
+        failure: function (response) {
+            alert(response);
+        }
     });
-});
 
+    this.event.stopPropagation();
 
-
-
-
-function loadEntrants() {
-    $('#gridEntrant').load('/Races/Result?handler=EntrantsPartial&raceId=@Model.ActiveRaceId');
+    return false;
 
 }
 
-function loadQualified() {
-    $('#gridQualified').load('/Races/Result?handler=QualifiedPartial&raceId=@Model.ActiveRaceId');
+function loadEntrants(raceId) {
+    $('#gridEntrant').load('/Races/Result?handler=EntrantsPartial&raceId=' + raceId);
+
+}
+
+function loadQualified(raceId) {
+    $('#gridQualified').load('/Races/Result?handler=QualifiedPartial&raceId=' + raceId);
 
 }
 
