@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WLC.Areas.Races.Pages
 {
-    public class RacerModel : PageModel
+    public class IndexModel : PageModel
     {
         public void OnGet()
         {

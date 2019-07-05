@@ -1,0 +1,85 @@
+﻿@page
+@model WLC.Areas.Races.Pages.Events.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Races/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Races</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Races.RaceId" class="control-label"></label>
+                <input asp-for="Races.RaceId" class="form-control" />
+                <span asp-validation-for="Races.RaceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Races.RaceName" class="control-label"></label>
+                <input asp-for="Races.RaceName" class="form-control" />
+                <span asp-validation-for="Races.RaceName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Races.Year" class="control-label"></label>
+                <input asp-for="Races.Year" class="form-control" />
+                <span asp-validation-for="Races.Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Races.RacePoints" class="control-label"></label>
+                <input asp-for="Races.RacePoints" class="form-control" />
+                <span asp-validation-for="Races.RacePoints" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Races.Participants" class="control-label"></label>
+                <input asp-for="Races.Participants" class="form-control" />
+                <span asp-validation-for="Races.Participants" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Races.RaceBoyOrGirl" class="control-label"></label>
+                <input asp-for="Races.RaceBoyOrGirl" class="form-control" />
+                <span asp-validation-for="Races.RaceBoyOrGirl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Races.MinimumAge" class="control-label"></label>
+                <input asp-for="Races.MinimumAge" class="form-control" />
+                <span asp-validation-for="Races.MinimumAge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Races.MaximumAge" class="control-label"></label>
+                <input asp-for="Races.MaximumAge" class="form-control" />
+                <span asp-validation-for="Races.MaximumAge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Races.SortOrder" class="control-label"></label>
+                <input asp-for="Races.SortOrder" class="form-control" />
+                <span asp-validation-for="Races.SortOrder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Races.RaceOrder" class="control-label"></label>
+                <input asp-for="Races.RaceOrder" class="form-control" />
+                <span asp-validation-for="Races.RaceOrder" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Races.IsBoating" /> @Html.DisplayNameFor(model => model.Races.IsBoating))
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

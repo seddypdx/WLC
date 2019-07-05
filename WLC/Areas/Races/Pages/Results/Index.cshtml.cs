@@ -9,52 +9,59 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using WLC.Models;
 
-namespace WLC.Areas.Races.Pages
+namespace WLC.Areas.Races.Pages.Results
 {
-    public class ResultModel : PageModel
+    public class ResultsModel : PageModel
     {
 
         private WLCRacesContext _context;
         public SelectList RaceList;
-        public IQueryable<Racers> AvailableRacers;
-        public IQueryable<Results> Results;
-  
+        public IQueryable<WLC.Models.Racers> AvailableRacers;
+        public IQueryable<WLC.Models.Results> Results;
 
         [BindProperty]
-        public int ActiveRaceId { get; set; } 
+        public bool IsBooting { get; set; }
+
+
+        [BindProperty]
+        public int ActiveRaceId { get; set; }
+
+        [BindProperty]
+        public WLC.Models.Racers NewRacer { get; set; }
 
         public WLC.Models.Races ActiveRace;
 
-        public ResultModel(WLCRacesContext context)
+        public ResultsModel(WLCRacesContext context)
         {
             _context = context;
-            RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == true).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
  
             ActiveRaceId = 200;
         }
 
-        public void OnGet(int raceId, int racerId)
+        public void OnGet()
         {
-            if (raceId > 0)
-                ActiveRaceId = raceId;
+            RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
 
-            if (ActiveRaceId == 0)
+          //  if (raceId > 0)
+           //     ActiveRaceId = raceId;
+
+          //  if (ActiveRaceId == 0)
                 ActiveRaceId = 200;
 
-            if (racerId > 0)
-            {
-                var result = new Results()
-                {
-                    Place = 4,
-                    TeamId =1,
-                    RaceId = ActiveRaceId,
-                    RacerId = racerId,
-                    Year = 2019
+            //if (racerId > 0)
+            //{
+            //    var result = new WLC.Models.Results()
+            //    {
+            //        Place = 4,
+            //        TeamId =1,
+            //        RaceId = ActiveRaceId,
+            //        RacerId = racerId,
+            //        Year = 2019
                     
-                };
-                _context.Results.Add(result);
-                _context.SaveChanges();
-            }
+            //    };
+            //    _context.Results.Add(result);
+            //    _context.SaveChanges();
+            //}
             ViewData["RaceId"] = ActiveRaceId;
 
             ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
@@ -65,6 +72,8 @@ namespace WLC.Areas.Races.Pages
         {
             ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
             ViewData["RaceId"] = ActiveRaceId;
+
+            RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
 
             SetupDetails();
 
@@ -104,7 +113,7 @@ namespace WLC.Areas.Races.Pages
             return new PartialViewResult
             {
                 ViewName = "_ResultEntrants",
-                ViewData = new ViewDataDictionary<IQueryable<Results>>(ViewData, Results)
+                ViewData = new ViewDataDictionary<IQueryable<WLC.Models.Results>>(ViewData, Results)
             };
         }
 
@@ -124,7 +133,7 @@ namespace WLC.Areas.Races.Pages
               return new PartialViewResult
             {
                 ViewName = "_ResultQualified",
-                ViewData = new ViewDataDictionary<IQueryable<Racers>>(ViewData, AvailableRacers)
+                ViewData = new ViewDataDictionary<IQueryable<WLC.Models.Racers>>(ViewData, AvailableRacers)
             };
         }
 
@@ -138,7 +147,7 @@ namespace WLC.Areas.Races.Pages
                 if (racerId == 0)
                     throw new Exception("Invalid Race");
 
-                var result = new Results()
+                var result = new WLC.Models.Results()
                 {
                     Place = 4,
                     TeamId = 1,

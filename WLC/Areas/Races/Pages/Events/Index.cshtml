@@ -1,0 +1,91 @@
+﻿@page
+@model WLC.Areas.Races.Pages.Events.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Races/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].RaceName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].RacePoints)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].Participants)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].RaceBoyOrGirl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].MinimumAge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].MaximumAge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].SortOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].RaceOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races[0].IsBoating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Races) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RaceName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RacePoints)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Participants)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RaceBoyOrGirl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinimumAge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaximumAge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SortOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RaceOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsBoating)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.RaceId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.RaceId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.RaceId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

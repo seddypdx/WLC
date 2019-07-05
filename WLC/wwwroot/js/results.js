@@ -11,13 +11,28 @@
 //    });
 //});
 
+$(document).ready(function () {
+    $("#HideSelections").click(function () {
+        $("#Selections").addClass('d-none');
+        $("#HiddenSelections").removeClass('d-none');
+
+    });
+
+    $("#ShowSelections").click(function () {
+        $("#Selections").removeClass('d-none');
+        $("#HiddenSelections").addClass('d-none');
+
+    });
+
+});
+
 
 
 function AddRacerToRace(racerId, raceId) {
    
     $.ajax({
         type: "GET",
-        url: "/Races/Result/?handler=EnterRacer&racerId="+ racerId + "&raceId=" + raceId,
+        url: "/Races/Results/?handler=EnterRacer&racerId="+ racerId + "&raceId=" + raceId,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
@@ -42,7 +57,7 @@ function RemoveRacerFromRace(racerId, raceId) {
 
     $.ajax({
         type: "GET",
-        url: "/Races/Result/?handler=RemoveRacer&racerId=" + racerId + "&raceId=" + raceId,
+        url: "/Races/Results/?handler=RemoveRacer&racerId=" + racerId + "&raceId=" + raceId,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
@@ -68,7 +83,7 @@ function SetRacerPosition(racerId, raceId, place) {
 
     $.ajax({
         type: "GET",
-        url: "/Races/Result/?handler=SetRacerPosition&racerId=" + racerId + "&raceId=" + raceId + "&place=" + place,
+        url: "/Races/Results/?handler=SetRacerPosition&racerId=" + racerId + "&raceId=" + raceId + "&place=" + place,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
@@ -89,12 +104,12 @@ function SetRacerPosition(racerId, raceId, place) {
 }
 
 function loadEntrants(raceId) {
-    $('#gridEntrant').load('/Races/Result?handler=EntrantsPartial&raceId=' + raceId);
+    $('#gridEntrant').load('/Races/Results?handler=EntrantsPartial&raceId=' + raceId);
 
 }
 
 function loadQualified(raceId) {
-    $('#gridQualified').load('/Races/Result?handler=QualifiedPartial&raceId=' + raceId);
+    $('#gridQualified').load('/Races/Results?handler=QualifiedPartial&raceId=' + raceId);
 
 }
 

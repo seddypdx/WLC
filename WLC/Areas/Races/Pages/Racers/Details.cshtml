@@ -1,0 +1,62 @@
+﻿@page
+@model WLC.Areas.Races.Pages.Racers.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Races/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Racers</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Racers.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Racers.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Racers.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Racers.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Racers.BoyOrGirl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Racers.BoyOrGirl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Racers.Age)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Racers.Age)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Racers.Birthdate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Racers.Birthdate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Racers.Cabin)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Racers.Cabin.CabinId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Racers.MemberStatus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Racers.MemberStatus.MemberStatus)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Racers.RacerId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
