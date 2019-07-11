@@ -88,11 +88,11 @@ function AddTeamToRace(raceId) {
 
 }
 
-function RemoveRacerFromRace(racerId, raceId) {
+function RemoveRacerFromRace(teamId, raceId) {
 
     $.ajax({
         type: "GET",
-        url: "/Races/Results/?handler=RemoveRacer&racerId=" + racerId + "&raceId=" + raceId,
+        url: "/Races/Results/?handler=RemoveRacer&teamId=" + teamId+ "&raceId=" + raceId,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
@@ -114,11 +114,11 @@ function RemoveRacerFromRace(racerId, raceId) {
 }
 
 
-function SetRacerPosition(racerId, raceId, place) {
+function SetRacerPosition(teamId, raceId, place) {
 
     $.ajax({
         type: "GET",
-        url: "/Races/Results/?handler=SetRacerPosition&racerId=" + racerId + "&raceId=" + raceId + "&place=" + place,
+        url: "/Races/Results/?handler=SetRacerPosition&teamId=" + teamId + "&raceId=" + raceId + "&place=" + place,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {

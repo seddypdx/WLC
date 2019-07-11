@@ -43,27 +43,9 @@ namespace WLC.Areas.Races.Pages.Results
         {
             RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
 
-          //  if (raceId > 0)
-           //     ActiveRaceId = raceId;
-
-          //  if (ActiveRaceId == 0)
                 ActiveRaceId = 200;
 
-            //if (racerId > 0)
-            //{
-            //    var result = new WLC.Models.Results()
-            //    {
-            //        Place = 4,
-            //        TeamId =1,
-            //        RaceId = ActiveRaceId,
-            //        RacerId = racerId,
-            //        Year = 2019
-                    
-            //    };
-            //    _context.Results.Add(result);
-            //    _context.SaveChanges();
-            //}
-            ViewData["RaceId"] = ActiveRaceId;
+                 ViewData["RaceId"] = ActiveRaceId;
 
             ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
             ViewData["TeamRace"] = ActiveRace.Participants > 1;
@@ -229,15 +211,18 @@ namespace WLC.Areas.Races.Pages.Results
             public int[] racerIds { get; set; }
         }
 
-        public IActionResult OnGetSetRacerPosition([FromQuery] int racerId, int raceId, int place)
+        public IActionResult OnGetSetRacerPosition([FromQuery] int teamId, int raceId, int place)
         {
 
             try
             {
 
-                var result = _context.Results.FirstOrDefault(x => x.Year == 2019 && x.RacerId == racerId && x.RaceId == raceId);
-                result.Place = place;
-                _context.Update(result);
+                var results = _context.Results.Where(x => x.Year == 2019 && x.TeamId == teamId && x.RaceId == raceId);
+                foreach (var result in results)
+                {
+                    result.Place = place;
+                    _context.Update(result);
+                }
                 _context.SaveChanges();
                 return new JsonResult(new { error = false, message = "Racer updated" });
 
@@ -252,14 +237,16 @@ namespace WLC.Areas.Races.Pages.Results
 
         }
 
-        public IActionResult OnGetRemoveRacer([FromQuery] int racerId, int raceId)
+        public IActionResult OnGetRemoveRacer([FromQuery] int teamId, int raceId)
         {
 
             try
             {
      
-                var result = _context.Results.FirstOrDefault(x => x.Year==2019 && x.RacerId == racerId && x.RaceId==raceId);
-                _context.Remove(result);
+                var results = _context.Results.Where(x => x.Year==2019 && x.TeamId == teamId && x.RaceId==raceId);
+                foreach(var result in results)
+                     _context.Remove(result);
+
                 _context.SaveChanges();
                 return new JsonResult(new { error = false, message = "Racer Removed" });
 
