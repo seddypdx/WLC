@@ -11,6 +11,7 @@ using WLC.Models;
 
 namespace WLC.Areas.Races.Pages.Results
 {
+    [IgnoreAntiforgeryToken(Order = 1001)]
     public class ResultsModel : PageModel
     {
 
@@ -65,6 +66,8 @@ namespace WLC.Areas.Races.Pages.Results
             ViewData["RaceId"] = ActiveRaceId;
 
             ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
+            ViewData["TeamRace"] = ActiveRace.Participants > 1;
+
             SetupDetails();
         }
 
@@ -72,6 +75,7 @@ namespace WLC.Areas.Races.Pages.Results
         {
             ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
             ViewData["RaceId"] = ActiveRaceId;
+            ViewData["TeamRace"] = ActiveRace.Participants > 1;
 
             RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
 
@@ -85,7 +89,7 @@ namespace WLC.Areas.Races.Pages.Results
 
             Results = _context.Results.Where(x => x.Year == 2019 && x.RaceId == ActiveRaceId)
                                       .Include(x => x.Racer).ThenInclude(x => x.Cabin)
-                                      .OrderBy(x => x.Place);
+                                      .OrderBy(x => x.Place).ThenBy(x => x.TeamId);
 
 
             AvailableRacers = _context.Racers
@@ -100,10 +104,12 @@ namespace WLC.Areas.Races.Pages.Results
 
         public PartialViewResult OnGetEntrantsPartial(int raceId)
         {
+            ViewData["TeamRace"] = false;
              if (raceId > 0)
             {
                 ActiveRaceId = raceId;
                 ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
+                ViewData["TeamRace"] = ActiveRace.Participants > 1;
             }
             ViewData["RaceId"] = raceId;
 
@@ -120,13 +126,15 @@ namespace WLC.Areas.Races.Pages.Results
         public PartialViewResult OnGetQualifiedPartial(int raceId)
         {
             ViewData["RaceId"] = raceId;
+            ViewData["TeamRace"] = false;
 
             if (raceId > 0)
             {
                 ActiveRaceId = raceId;
                 ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
+                ViewData["TeamRace"] = ActiveRace.Participants > 1;
             }
-   
+
 
             SetupDetails();
 
@@ -150,7 +158,7 @@ namespace WLC.Areas.Races.Pages.Results
                 var result = new WLC.Models.Results()
                 {
                     Place = 4,
-                    TeamId = 1,
+                    TeamId = GetNextTeamId(raceId),
                     RaceId = raceId,
                     RacerId = racerId,
                     Year = 2019
@@ -166,6 +174,59 @@ namespace WLC.Areas.Races.Pages.Results
                 return new JsonResult(new { error = true, message = "Adding Racer Failed" });
 
             }
+        }
+
+        public IActionResult OnPostEnterTeam([FromBody] AddTeamRequest addTeamRequest)
+        {
+
+            try
+            {
+                if (addTeamRequest.raceId == 0)
+                    throw new Exception("Invalid Race");
+
+                var teamId = GetNextTeamId(addTeamRequest.raceId);
+
+                foreach (int racerId in addTeamRequest.racerIds)
+                {
+                    var result = new WLC.Models.Results()
+                    {
+                        Place = 4,
+                        TeamId = teamId,
+                        RaceId = addTeamRequest.raceId,
+                        RacerId =racerId,
+                        Year = 2019
+
+                    };
+                    _context.Results.Add(result);
+
+                }
+                _context.SaveChanges();
+                return new JsonResult(new { error = false, message = "RacerAdded" });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { error = true, message = "Adding Racer Failed" });
+
+            }
+        }
+
+        private int GetNextTeamId(int raceId)
+        {
+            // get the highest team Id for this race
+            var lastResult = _context.Results.Where(x => x.Year == 2019
+                                                        && x.RaceId == raceId)
+                                         .OrderByDescending(x => x.TeamId).FirstOrDefault();
+
+            if (lastResult != null)
+               return (int)lastResult.TeamId + 1;
+
+            return 1;
+        }
+        public class AddTeamRequest
+        {
+            public int raceId { get; set; }
+            public int[] racerIds { get; set; }
         }
 
         public IActionResult OnGetSetRacerPosition([FromQuery] int racerId, int raceId, int place)

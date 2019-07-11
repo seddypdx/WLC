@@ -6,31 +6,39 @@
 <div id="cardList">
     @if (Model != null)
     {
-    @foreach (var result in Model)
-    {
-    <div class="card w-50 text-white mb-3 place_@result.Place">
-   
+        var teamGroups = Model.GroupBy(i => i.TeamId);
 
-        <div class="card-body">
-            <div>
-                <button type="button" onclick='return RemoveRacerFromRace(@result.Racer.RacerId,@ViewData["RaceId"])' class="close" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        foreach (var teamGroup in teamGroups)
+        {
+            var repTeamGroup = teamGroup.FirstOrDefault();
+
+            <div class="card w-50 text-white mb-3 place_@repTeamGroup.Place">
+
+
+                <div class="card-body">
+                    <div>
+                        <button type="button" onclick='return RemoveRacerFromRace(@repTeamGroup.Racer.RacerId,@ViewData["RaceId"])' class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    @foreach (var result in teamGroup)
+                    {
+                    <div>
+                        <p> @result.Racer.LastName, @result.Racer.FirstName (@result.Racer.Age)</p>
+                    </div>
+                    }
+                    <div class="entrants-positions">
+                        <input name="place_@repTeamGroup.RacerId" onclick='return SetRacerPosition(@repTeamGroup.Racer.RacerId,@ViewData["RaceId"], 1)' type="radio" @(repTeamGroup.Place == 1 ? "Checked" : "") /><span>1st</span>
+                        <input name="place_@repTeamGroup.RacerId" onclick='return SetRacerPosition(@repTeamGroup.Racer.RacerId,@ViewData["RaceId"], 2)' type="radio" @(repTeamGroup.Place == 2 ? "Checked" : "") /><span>2nd</span>
+                        <input name="place_@repTeamGroup.RacerId" onclick='return SetRacerPosition(@repTeamGroup.Racer.RacerId,@ViewData["RaceId"], 3)' type="radio" @(repTeamGroup.Place == 3 ? "Checked" : "") /><span>3rd</span>
+                        <input name="place_@repTeamGroup.RacerId" onclick='return SetRacerPosition(@repTeamGroup.Racer.RacerId,@ViewData["RaceId"], 4)' type="radio" @(repTeamGroup.Place == 4 ? "Checked" : "") /><span>++</span>
+                    </div>
+                </div>
             </div>
-            <div >
-                <p> @result.Racer.LastName, @result.Racer.FirstName (@result.Racer.Age)</p>
-                <p>@result.Racer.Cabin.CabinName</p>
-            </div>
-            <div class="entrants-positions">
-                <input name="place_@result.RacerId" onclick='return SetRacerPosition(@result.Racer.RacerId,@ViewData["RaceId"], 1)'  type="radio" @(result.Place==1?"Checked":"") /><span>1st</span>
-                <input name="place_@result.RacerId" onclick='return SetRacerPosition(@result.Racer.RacerId,@ViewData["RaceId"], 2)' type="radio"  @(result.Place==2?"Checked":"")  /><span>2nd</span>
-                <input name="place_@result.RacerId" onclick='return SetRacerPosition(@result.Racer.RacerId,@ViewData["RaceId"], 3)' type="radio"  @(result.Place==3?"Checked":"")  /><span>3rd</span>
-                <input name="place_@result.RacerId" onclick='return SetRacerPosition(@result.Racer.RacerId,@ViewData["RaceId"], 4)' type="radio"  @(result.Place==4?"Checked":"")  /><span>++</span>
-            </div>
-        </div>
-    </div>
+        }
     }
-    }
+
 
 </div>
            

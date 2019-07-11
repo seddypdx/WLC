@@ -53,6 +53,41 @@ function AddRacerToRace(racerId, raceId) {
   
 }
 
+function AddTeamToRace(raceId) {
+
+    var racerIds = $("#gridQualified input:checkbox:checked").map(function () {
+        return $(this).val();
+    }).get();
+
+    var addTeamRequest = {
+        raceId: raceId,
+        racerIds: racerIds
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "/Races/Results/?handler=EnterTeam",
+        data: JSON.stringify(addTeamRequest),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.error === false) {
+                loadEntrants(raceId);
+                loadQualified(raceId);
+            }
+
+        },
+        failure: function (response) {
+            alert(response);
+        }
+    });
+
+    this.event.stopPropagation();
+
+    return false;
+
+}
+
 function RemoveRacerFromRace(racerId, raceId) {
 
     $.ajax({

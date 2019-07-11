@@ -3,14 +3,21 @@
    // @Layout = null;
 }
 
-<div id="cardList">
+<div id="cardListQualified">
     @foreach (var racer in Model)
     {
         <div class="card w-50 bg-primary text-white mb-3">
 
             <div class="card-body">
                 <h7 class="card-title">
-                    <a class="text-white" onclick='return AddRacerToRace(@racer.RacerId,@ViewData["RaceId"])' href="">@racer.LastName, @racer.FirstName (@racer.Age)</a>
+                    @if (!(bool) ViewData["TeamRace"])
+                    {
+                        <a class="text-white" onclick='return AddRacerToRace(@racer.RacerId,@ViewData["RaceId"])' href="">@racer.LastName, @racer.FirstName (@racer.Age)</a>
+                    }
+                    else
+                    {
+                        <a class="text-white" onclick='return AddTeamToRace(@ViewData["RaceId"])' href="">@racer.LastName, @racer.FirstName (@racer.Age)</a><input value="@racer.RacerId" type="checkbox" />
+                    }
 
                 </h7>
 
