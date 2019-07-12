@@ -1,15 +1,4 @@
 ﻿
-//$(function () {
-//    $('.EnterRacer').on('click', function (event) {
-//        event.cancelDefault();
-//        event.stopPropagation();
-//      //  $('#gridEntrant').load('<%=Url.Action("EnterRacer", "YourController")%>', new { catID =  tree.CategoryCode, langID= 1 }, null);
-//        $('#gridEntrant').load(this.href);
-//      //  loadEntrants();
-//      //  loadQualified();
-//        return false();
-//    });
-//});
 
 $(document).ready(function () {
     $("#HideSelections").click(function () {
@@ -24,12 +13,15 @@ $(document).ready(function () {
 
     });
 
+
+
 });
 
 
 
 function AddRacerToRace(racerId, raceId) {
-   
+
+
     $.ajax({
         type: "GET",
         url: "/Races/Results/?handler=EnterRacer&racerId="+ racerId + "&raceId=" + raceId,
@@ -37,13 +29,16 @@ function AddRacerToRace(racerId, raceId) {
         dataType: "json",
         success: function (response) {
             if (response.error === false) {
-                 loadEntrants(raceId);
-                 loadQualified(raceId);
+                loadEntrants(raceId);
+                loadQualified(raceId);
+            }
+            else {
+                toastr.error(response.message);
             }
 
         },
         failure: function (response) {
-            alert(response);
+            toastr.error(response);
         }
     });
 
@@ -75,6 +70,9 @@ function AddTeamToRace(raceId) {
                 loadEntrants(raceId);
                 loadQualified(raceId);
             }
+            else {
+                toastr.error(response.message);
+            }
 
         },
         failure: function (response) {
@@ -100,6 +98,9 @@ function RemoveRacerFromRace(teamId, raceId) {
                 loadEntrants(raceId);
                 loadQualified(raceId);
             }
+            else {
+                toastr.error(response.message);
+            }
 
         },
         failure: function (response) {
@@ -124,6 +125,9 @@ function SetRacerPosition(teamId, raceId, place) {
         success: function (response) {
             if (response.error === false) {
                 loadEntrants(raceId);
+            }
+            else {
+                toastr.error(response.message);
             }
 
         },

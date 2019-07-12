@@ -43,7 +43,7 @@ namespace WLC.Areas.Races.Pages.Results
         {
             RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
 
-                ActiveRaceId = 200;
+                ActiveRaceId = System.Convert.ToInt32(RaceList.FirstOrDefault()?.Value);
 
                  ViewData["RaceId"] = ActiveRaceId;
 
@@ -153,7 +153,7 @@ namespace WLC.Areas.Races.Pages.Results
             }
             catch(Exception ex)
             {
-                return new JsonResult(new { error = true, message = "Adding Racer Failed" });
+                return new JsonResult(new { error = true, message = "Adding Racer Failed: " + ex.Message });
 
             }
         }
@@ -188,7 +188,7 @@ namespace WLC.Areas.Races.Pages.Results
             }
             catch (Exception ex)
             {
-                return new JsonResult(new { error = true, message = "Adding Racer Failed" });
+                return new JsonResult(new { error = true, message = "Adding Team Failed: " + ex.Message });
 
             }
         }
@@ -229,7 +229,7 @@ namespace WLC.Areas.Races.Pages.Results
             }
             catch (Exception ex)
             {
-                return new JsonResult(new { error = true, message = "Error Removing." + ex.Message });
+                return new JsonResult(new { error = true, message = "Setting position failed: " + ex.Message });
 
             }
 
@@ -253,7 +253,7 @@ namespace WLC.Areas.Races.Pages.Results
             }
             catch (Exception ex)
             {
-                return new JsonResult(new { error = true, message = "Error Removing." + ex.Message });
+                return new JsonResult(new { error = true, message = "Removing Racer Failed: " + ex.Message });
 
             }
 
