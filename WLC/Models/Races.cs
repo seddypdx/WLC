@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WLC.Models
 {
@@ -21,6 +22,54 @@ namespace WLC.Models
         public double? SortOrder { get; set; }
         public int? RaceOrder { get; set; }
         public bool IsBoating { get; set; }
+
+        [NotMapped]
+        public double PointMultiplier {
+            get {
+                if (Participants > 1)
+                    return .5;
+
+                return 1;
+           }
+        }
+
+
+        public string GetColorForPlace(int place)
+       {
+            if (RacePoints == "Participation Ribbon Only")
+                return "Purple";
+
+
+            if (place == 1)
+                return "Blue";
+
+            if (place == 2)
+                return "Red";
+
+            if (place == 3)
+                return "White";
+
+            return "Purple";
+
+        }
+
+        public double GetPointsForRibon(string ribon)
+        {
+
+            if (RacePoints == "Exhibition: 1 Point all places")
+                return 1;
+
+            if (ribon == "Blue")
+                return 10 * PointMultiplier;
+            if (ribon == "Red")
+                return 7 * PointMultiplier;
+            if (ribon == "White")
+                return 4 * PointMultiplier;
+
+            return 1;
+        }
+
+
 
         public virtual ICollection<Results> Results { get; set; }
     }
