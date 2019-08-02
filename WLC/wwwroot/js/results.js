@@ -142,6 +142,71 @@ function SetRacerPosition(teamId, raceId, place) {
 
 }
 
+function EditRacer() {
+
+    clearRacerInfo();
+    $('#AddRacerModal').modal();
+
+}
+
+function PopupRacer() {
+
+    clearRacerInfo();
+    $('#AddRacerModal').modal();
+
+}
+
+function SaveRacerInfo(raceId) {
+
+    var racer = {};
+    racer.RacerId = 0;
+    racer.FirstName = $('[id*=FirstName]').val();
+    racer.LastName = $('[id*=LastName]').val();
+    racer.BoyOrGirl = $('[id*=BoyOrGirl]').val();
+    racer.BirthDate =new Date($('[id*=Birthdate]').val());
+    racer.MemberStatusId = parseInt($('[id*=MemberStatusId]').val());
+    racer.CabinId = parseInt($('[id*=CabinId]').val());
+   
+    $.ajax({
+        type: "POST",
+        url: "/Races/Results/?handler=SaveRacer",
+        data: JSON.stringify(racer),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.error === false) {
+                loadEntrants(raceId);
+                loadQualified(raceId);
+                $('#AddRacerModal').modal('toggle');
+
+            }
+            else {
+                toastr.error(response.message);
+            }
+
+        },
+        failure: function (response) {
+            alert(response);
+        }
+    });
+
+    this.event.stopPropagation();
+
+    return false;
+
+}
+
+function clearRacerInfo() {
+
+    $('#NewRacer_RacerId').val('0');
+
+    $('#NewRacer_FirstName').val('');
+    $('#NewRacer_LastName').val('');
+    $('#NewRacer_BoyOrGirl').val('b');
+    $('#NewRacer_Birthdate').val('7/1/2010');
+
+}
+
 function loadEntrants(raceId) {
     $('#gridEntrant').load('/Races/Results?handler=EntrantsPartial&raceId=' + raceId);
 

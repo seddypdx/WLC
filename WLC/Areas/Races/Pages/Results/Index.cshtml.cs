@@ -17,6 +17,9 @@ namespace WLC.Areas.Races.Pages.Results
 
         private WLCRacesContext _context;
         public SelectList RaceList;
+        public SelectList CabinList;
+        public SelectList MemberStatusList;
+
         public IQueryable<WLC.Models.Racers> AvailableRacers;
         public IQueryable<WLC.Models.Results> Results;
 
@@ -24,7 +27,7 @@ namespace WLC.Areas.Races.Pages.Results
         public bool IsBooting { get; set; }
 
 
-        [BindProperty]
+        [BindProperty(SupportsGet =true)]
         public int ActiveRaceId { get; set; }
 
         [BindProperty]
@@ -42,10 +45,13 @@ namespace WLC.Areas.Races.Pages.Results
         public void OnGet()
         {
             RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
+            CabinList = new SelectList(_context.Cabins.ToList().OrderBy(x => x.CabinName), "CabinId", "CabinName");
+            MemberStatusList = new SelectList(_context.MemberStatuses.ToList().OrderBy(x => x.MemberStatus), "MemberStatusId", "MemberStatus");
 
+            if (ActiveRaceId == 0)
                 ActiveRaceId = System.Convert.ToInt32(RaceList.FirstOrDefault()?.Value);
 
-                 ViewData["RaceId"] = ActiveRaceId;
+                ViewData["RaceId"] = ActiveRaceId;
 
             ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
             ViewData["TeamRace"] = ActiveRace.Participants > 1;
@@ -211,6 +217,18 @@ namespace WLC.Areas.Races.Pages.Results
             public int[] racerIds { get; set; }
         }
 
+        public class SaveRacerRequest
+        {
+            public int RacerId { get; set; }
+            public string LastName { get; set; }
+            public string FirstName { get; set; }
+            public string BoyOrGirl { get; set; }
+            public DateTime Birthdate{ get; set; }
+            public int MemberStatusId { get; set; }
+            public int CabinId { get; set; }
+
+        }
+
         public IActionResult OnGetSetRacerPosition([FromQuery] int teamId, int raceId, int place)
         {
 
@@ -260,6 +278,29 @@ namespace WLC.Areas.Races.Pages.Results
 
 
         }
+
+          public IActionResult OnPostSaveRacer([FromBody] [Bind("RacerId, FirstName, LastName, BoyOrGirl ,Birthate, MemberStatusId, CabinId")] Models.Racers saveRacer)
+        {
+
+            try
+            {
+                saveRacer.SetAge();
+                if (saveRacer.RacerId == 0)
+                    _context.Racers.Add(saveRacer);
+                else
+                    _context.Racers.Attach(saveRacer);
+
+                _context.SaveChanges();
+                return new JsonResult(new { error = false, message = "RacerSaved" });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { error = true, message = "Adding Racer Failed: " + ex.Message });
+
+            }
+        }
+
 
         #endregion
 

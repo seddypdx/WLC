@@ -24,7 +24,7 @@ namespace WLC.Areas.Races.Pages.Results
         public bool IsBooting { get; set; }
 
 
-        [BindProperty]
+        [BindProperty(SupportsGet=true)]
         public int ActiveRaceId { get; set; }
 
         [BindProperty]
@@ -43,6 +43,7 @@ namespace WLC.Areas.Races.Pages.Results
         {
             RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
 
+            if (ActiveRaceId== 0)
                 ActiveRaceId = System.Convert.ToInt32(RaceList.FirstOrDefault()?.Value);
 
                  ViewData["RaceId"] = ActiveRaceId;

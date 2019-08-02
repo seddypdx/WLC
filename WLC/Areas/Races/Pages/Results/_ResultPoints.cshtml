@@ -6,36 +6,40 @@
 <div id="cardList">
     @if (Model != null)
     {
-        var teamGroups = Model.GroupBy(i => new { i.Place, i.TeamId });
+        var teamGroups = Model.GroupBy(i => new { i.PointsPlace, i.TeamId })
+                               .Select (group => new {
+                                  PointsPlace=group.First().PointsPlace,
+                                  TeamId = group.First().TeamId,
+                                  TeamMembers = group.ToList() 
+                                 });
 
-        foreach (var teamGroup in teamGroups)
+        foreach (var teamGroup in teamGroups.ToList().OrderBy(x=>x.PointsPlace))
         {
-            var repTeamGroup = teamGroup.FirstOrDefault();
 
-            <div class="card w-50 text-white mb-3 place_@repTeamGroup.Place">
+    <div class="card w-100 text-white mb-3 place_@teamGroup.PointsPlace">
 
 
-                <div class="card-body">
-                    <div>
-                        <button type="button" onclick='return RemoveRacerFromRace(@repTeamGroup.TeamId,@ViewData["RaceId"])' class="close" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    @foreach (var result in teamGroup)
-                    {
-                    <div>
-                        <p> @result.Racer.LastName, @result.Racer.FirstName (@result.Racer.Age)</p>
-                        <p>
-                            <span>@result.Place /  @result.PointsPlace</span>
-                            <span>/ @result.Points</span>
-                            <span>/ @result.Ribbon</span>
-                            <span>/ @result.Comments</span>
-                        </p>
-                    </div>
-                    }
-                </div>
+        <div class="card-body">
+            <div>
+                <button type="button" onclick='return RemoveRacerFromRace(@teamGroup.TeamId,@ViewData["RaceId"])' class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+
+            @foreach (var result in teamGroup.TeamMembers)
+                    {
+            <div>
+                <p> @result.Racer.LastName, @result.Racer.FirstName (@result.Racer.Age)</p>
+                <p>
+                    <span>@result.Place /  @result.PointsPlace</span>
+                    <span>/ @result.Points</span>
+                    <span>/ @result.Ribbon</span>
+                    <span>/ @result.Comments</span>
+                </p>
+            </div>
+                    }
+        </div>
+    </div>
         }
     }
 

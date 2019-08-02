@@ -20,8 +20,10 @@
                     }
 
                 </h7>
-
-                <p>@racer.Cabin.CabinName</p>
+                <div>
+                    <span>@racer.Cabin.CabinName</span><span class="fa-pull-right" onclick='return AddRacerToRace(@racer.RacerId,@ViewData["RaceId"])'><i class="fa fa-plus"></i></span>
+                </div>
+                
             </div>
         </div>
     }

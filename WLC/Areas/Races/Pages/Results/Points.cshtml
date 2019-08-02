@@ -16,8 +16,8 @@
                     </select>
                 </div>
                 <div class="col-md-6">
-                   <span>Swimming</span> <input asp-for="IsBooting" value="false"  onchange="this.form.submit()" type="radio">
-                   <span>Boating</span> <input asp-for="IsBooting" value="true" onchange="this.form.submit()" type="radio">
+                    <span>Swimming</span> <input asp-for="IsBooting" value="false" onchange="this.form.submit()" type="radio">
+                    <span>Boating</span> <input asp-for="IsBooting" value="true" onchange="this.form.submit()" type="radio">
                 </div>
             </div>
 
@@ -35,7 +35,7 @@
         </div>
 
         <div class="row">
-             <div class="col-md-6">
+            <div class="col-md-6">
                 <h6>Results</h6>
                 <div id="gridEntrant">
                     <partial name="_ResultPoints" model="@Model.Results" />
@@ -46,6 +46,7 @@
 
         </div>
     </div>
+    <a asp-page="Index" asp-route-ActiveRaceId="@Model.ActiveRace.RaceId">Results</a>
 
     @section scripts{
         <script src="~/js/results.js" asp-append-version="true"></script>

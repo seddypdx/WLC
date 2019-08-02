@@ -46,7 +46,7 @@
                     </p>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddRacerModal">
+                    <button type="button" class="btn btn-primary" onclick="PopupRacer()" >
                         Add Racer
                     </button>
                 </div>
@@ -56,7 +56,7 @@
                 <div id="gridEntrant">
                     <partial name="_ResultEntrants" model="@Model.Results" />
                 </div>
-                </p>
+                <a asp-page="Points" asp-route-ActiveRaceId="@Model.ActiveRace.RaceId">Points</a>
 
             </div>
 
@@ -98,7 +98,10 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="NewRacer.BoyOrGirl" class="control-label"></label>
-                            <input asp-for="NewRacer.BoyOrGirl" class="form-control" />
+                            <select asp-for="NewRacer.BoyOrGirl" class="form-control">
+                                <option>b</option>
+                                <option>g</option>
+                            </select>
                             <span asp-validation-for="NewRacer.BoyOrGirl" class="text-danger"></span>
                         </div>
                           <div class="form-group">
@@ -108,16 +111,15 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="NewRacer.MemberStatusId" class="control-label"></label>
-                            <select asp-for="NewRacer.MemberStatusId" class="form-control" asp-items="ViewBag.MemberStatusId"></select>
+                            <select asp-for="NewRacer.MemberStatusId" class="form-control" asp-items="Model.MemberStatusList"></select>
                             <span asp-validation-for="NewRacer.MemberStatusId" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="NewRacer.CabinId" class="control-label"></label>
-                            <select asp-for="NewRacer.CabinId" class="form-control" asp-items="ViewBag.CabinId"></select>
+                            <select asp-for="NewRacer.CabinId" class="form-control" asp-items="Model.CabinList">
+                                <option value="null">Select One</option>
+                            </select>
                             <span asp-validation-for="NewRacer.CabinId" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-primary" />
                         </div>
                     </form>
                 </div>
@@ -125,7 +127,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" onclick="return SaveRacerInfo(@Model.ActiveRace.RaceId)" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
