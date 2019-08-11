@@ -76,6 +76,10 @@ body {
     color: black;
 }
 
+ .place_3 span {
+        color: black;
+    }
+
 
 .place_4 {
     background-color: rebeccapurple;
@@ -92,4 +96,10 @@ body {
 }
 .place_8 {
     background-color: rebeccapurple;
+}
+
+.addRacerSymbol {
+  
+    cursor:pointer
+
 }

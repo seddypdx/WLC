@@ -45,9 +45,7 @@ namespace WLC.Areas.Races.Pages.Results
         public void OnGet()
         {
             RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
-            CabinList = new SelectList(_context.Cabins.ToList().OrderBy(x => x.CabinName), "CabinId", "CabinName");
-            MemberStatusList = new SelectList(_context.MemberStatuses.ToList().OrderBy(x => x.MemberStatus), "MemberStatusId", "MemberStatus");
-
+ 
             if (ActiveRaceId == 0)
                 ActiveRaceId = System.Convert.ToInt32(RaceList.FirstOrDefault()?.Value);
 
@@ -73,6 +71,8 @@ namespace WLC.Areas.Races.Pages.Results
 
         private void SetupDetails()
         {
+            CabinList = new SelectList(_context.Cabins.ToList().OrderBy(x => x.CabinName), "CabinId", "CabinName");
+            MemberStatusList = new SelectList(_context.MemberStatuses.ToList().OrderBy(x => x.MemberStatus), "MemberStatusId", "MemberStatus");
 
 
             Results = _context.Results.Where(x => x.Year == 2019 && x.RaceId == ActiveRaceId)
@@ -84,7 +84,8 @@ namespace WLC.Areas.Races.Pages.Results
                            .Where(x => x.Age >= ActiveRace.MinimumAge
                                 && x.Age <= ActiveRace.MaximumAge
                                 && (x.BoyOrGirl == ActiveRace.RaceBoyOrGirl || ActiveRace.RaceBoyOrGirl == "b/g")
-                                && !_context.Results.Any(p => p.RaceId==ActiveRace.RaceId && p.RacerId == x.RacerId)
+                                && !_context.Results.Any(p => p.RaceId==ActiveRace.RaceId && p.RacerId == x.RacerId && p.Year ==2019)
+                                && x.MemberStatusId != (int) MemberStatusEnum.Inactive
                                 )
                             .Include(x => x.Cabin)
                             .OrderBy(x => x.LastName);
@@ -109,6 +110,23 @@ namespace WLC.Areas.Races.Pages.Results
                 ViewName = "_ResultEntrants",
                 ViewData = new ViewDataDictionary<IQueryable<WLC.Models.Results>>(ViewData, Results)
             };
+        }
+
+        public IActionResult OnGetRacer(int racerId)
+        {
+            try
+            {
+                var racer = _context.Racers.FirstOrDefault(x => x.RacerId == racerId);
+
+                return new JsonResult(new { error = false, Racer = racer });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { error = true, message = "Getting Racer Failed: " + ex.Message });
+
+            }
+
         }
 
         public PartialViewResult OnGetQualifiedPartial(int raceId)
@@ -288,7 +306,17 @@ namespace WLC.Areas.Races.Pages.Results
                 if (saveRacer.RacerId == 0)
                     _context.Racers.Add(saveRacer);
                 else
-                    _context.Racers.Attach(saveRacer);
+                {
+                    var updateRacer = _context.Racers.FirstOrDefault(x => x.RacerId == saveRacer.RacerId);
+                    updateRacer.FirstName = saveRacer.FirstName;
+                    updateRacer.LastName = saveRacer.LastName;
+                    updateRacer.MemberStatusId = saveRacer.MemberStatusId;
+                    updateRacer.Birthdate = saveRacer.Birthdate;
+                    updateRacer.CabinId = saveRacer.CabinId;
+                    updateRacer.BoyOrGirl = saveRacer.BoyOrGirl;
+                    updateRacer.SetAge();
+                    _context.Racers.Update(updateRacer);
+                }
 
                 _context.SaveChanges();
                 return new JsonResult(new { error = false, message = "RacerSaved" });

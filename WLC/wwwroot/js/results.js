@@ -142,10 +142,40 @@ function SetRacerPosition(teamId, raceId, place) {
 
 }
 
-function EditRacer() {
+function GetRacer(racerId) {
 
-    clearRacerInfo();
-    $('#AddRacerModal').modal();
+    $.ajax({
+        type: "GET",
+        url: "/Races/Results/?handler=Racer&racerId=" + racerId,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.error === false) {
+                setRacerInfo(response.racer);
+                $('#AddRacerModal').modal();
+            }
+            else {
+                toastr.error(response.message);
+            }
+
+        },
+        failure: function (response) {
+            alert(response);
+        }
+    });
+
+    this.event.stopPropagation();
+
+    return true;
+
+}
+
+function EditRacer(racerId) {
+
+    GetRacer(racerId);
+    this.event.stopPropagation();
+
+    return false;
 
 }
 
@@ -159,7 +189,7 @@ function PopupRacer() {
 function SaveRacerInfo(raceId) {
 
     var racer = {};
-    racer.RacerId = 0;
+    racer.RacerId = $('[id*=RacerId]').val();
     racer.FirstName = $('[id*=FirstName]').val();
     racer.LastName = $('[id*=LastName]').val();
     racer.BoyOrGirl = $('[id*=BoyOrGirl]').val();
@@ -198,12 +228,27 @@ function SaveRacerInfo(raceId) {
 
 function clearRacerInfo() {
 
+    var date = new Date(2010, 7, 1);
     $('#NewRacer_RacerId').val('0');
 
     $('#NewRacer_FirstName').val('');
     $('#NewRacer_LastName').val('');
     $('#NewRacer_BoyOrGirl').val('b');
-    $('#NewRacer_Birthdate').val('7/1/2010');
+    $('#NewRacer_Birthdate').val(date.toISOString().slice(0, 10));
+
+}
+
+function setRacerInfo(racer) {
+
+    var date = parseJsonDate(racer.birthdate);
+    $('#NewRacer_RacerId').val(racer.racerId);
+
+    $('#NewRacer_FirstName').val(racer.firstName);
+    $('#NewRacer_LastName').val(racer.lastName);
+    $('#NewRacer_BoyOrGirl').val(racer.boyOrGirl);
+    $('#NewRacer_Birthdate').val(date.toISOString().slice(0,10));
+    $('#NewRacer_MemberStatusId').val(racer.memberStatusId);
+    $('#NewRacer_CabinId').val(racer.cabinId);
 
 }
 
@@ -222,11 +267,11 @@ function filterCards() {
     var input, filter, cards, cardContainer, h5, title, i, cabin;
     input = document.getElementById("myFilter");
     filter = input.value.toUpperCase();
-    cardContainer = document.getElementById("cardList");
+    cardContainer = document.getElementById("cardListQualified");
     cards = cardContainer.getElementsByClassName("card");
     for (i = 0; i < cards.length; i++) {
-        title = cards[i].querySelector(".card-body a");
-        cabin = cards[i].querySelector(".card-body p");
+        title = cards[i].querySelector(".card-title a");
+        cabin = cards[i].querySelector(".cabinName");
         if ((title.innerText.toUpperCase().indexOf(filter) > -1) ||
             (cabin.innerText.toUpperCase().indexOf(filter) > -1)
         ) {
@@ -235,4 +280,13 @@ function filterCards() {
             cards[i].style.display = "none";
         }
     }
+}
+
+function parseJsonDate(jsonDate) {
+
+    var year = parseInt(jsonDate.substring(0, 4));
+    var day = parseInt(jsonDate.substring(8, 10));
+    var month = parseInt(jsonDate.substring(5, 7));
+    var date = new Date(year,month-1, day);
+    return date;
 }

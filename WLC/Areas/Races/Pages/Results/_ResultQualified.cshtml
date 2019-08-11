@@ -10,20 +10,24 @@
 
             <div class="card-body">
                 <h7 class="card-title">
-                    @if (!(bool) ViewData["TeamRace"])
+                    @if (!(bool)ViewData["TeamRace"])
                     {
-                        <a class="text-white" onclick='return AddRacerToRace(@racer.RacerId,@ViewData["RaceId"])' href="">@racer.LastName, @racer.FirstName (@racer.Age)</a>
+                        <a class="text-white" onclick='return EditRacer(@racer.RacerId)' href="">@racer.LastName, @racer.FirstName (@racer.Age)</a>
+                        <div>
+                            <span class="cabinName">@racer.Cabin.CabinName</span><span class="fa-pull-right" onclick='return AddRacerToRace(@racer.RacerId,@ViewData["RaceId"])'><i class="addRacerSymbol fa fa-user-plus"></i></span>
+                        </div>
+
                     }
                     else
                     {
-                        <a class="text-white" onclick='return AddTeamToRace(@ViewData["RaceId"])' href="">@racer.LastName, @racer.FirstName (@racer.Age)</a><input value="@racer.RacerId" type="checkbox" />
+                        <a class="text-white" onclick='return EditRacer(@racer.RacerId)' href="">@racer.LastName, @racer.FirstName (@racer.Age)</a><input value="@racer.RacerId" type="checkbox" />
+                        <div>
+                            <span class="cabinName">@racer.Cabin.CabinName</span><span class="fa-pull-right" onclick='return AddTeamToRace(@ViewData["RaceId"])'><i class="addRacerSymbol fa fa-user-plus"></i></span>
+                        </div>
                     }
 
                 </h7>
-                <div>
-                    <span>@racer.Cabin.CabinName</span><span class="fa-pull-right" onclick='return AddRacerToRace(@racer.RacerId,@ViewData["RaceId"])'><i class="fa fa-plus"></i></span>
-                </div>
-                
+       
             </div>
         </div>
     }

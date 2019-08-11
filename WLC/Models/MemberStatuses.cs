@@ -10,7 +10,8 @@ namespace WLC.Models
         Retiree = 4,
         Exhibition = 5,
         Guest = 6,
-        AdultGuest = 7
+        AdultGuest = 7,
+        Inactive = 8
 
     }
 
