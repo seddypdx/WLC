@@ -88,8 +88,14 @@ namespace WLC.Areas.Races.Services
                         teamMember.Points = 0;
                     else
                         teamMember.Points = race.GetPointsForRibon(teamMember.Ribbon);
+
+                    context.Results.Attach(teamMember);
+                    context.Entry(teamMember).State = EntityState.Modified;
+                    context.SaveChanges();
+
                 }
             }
+
 
        }
 

@@ -39,13 +39,13 @@ namespace WLC.Areas.Races.Pages.Results
         {
             _context = context;
  
-            ActiveRaceId = 200;
+            ActiveRaceId = 0;
         }
 
         public void OnGet()
         {
-            RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
- 
+            SetupRaceList();
+
             if (ActiveRaceId == 0)
                 ActiveRaceId = System.Convert.ToInt32(RaceList.FirstOrDefault()?.Value);
 
@@ -59,13 +59,25 @@ namespace WLC.Areas.Races.Pages.Results
 
         public void OnPost()
         {
-            ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
-            ViewData["RaceId"] = ActiveRaceId;
-            ViewData["TeamRace"] = ActiveRace.Participants > 1;
+            SetupRaceList();
 
-            RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.SortOrder), "RaceId", "RaceName");
+            if (ActiveRaceId == 0)
+                ActiveRaceId = System.Convert.ToInt32(RaceList.FirstOrDefault()?.Value);
+
+            ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
+
+            ViewData["RaceId"] = ActiveRaceId;
+            ViewData["TeamRace"] = ActiveRace?.Participants > 1;
+
 
             SetupDetails();
+
+        }
+
+        private void SetupRaceList()
+        {
+
+            RaceList = new SelectList(_context.Races.Where(x => x.IsBoating == IsBooting).ToList().OrderBy(x => x.RaceOrder), "RaceId", "RaceName");
 
         }
 
@@ -242,6 +254,7 @@ namespace WLC.Areas.Races.Pages.Results
             public string FirstName { get; set; }
             public string BoyOrGirl { get; set; }
             public DateTime Birthdate{ get; set; }
+            public int Age { get; set; }
             public int MemberStatusId { get; set; }
             public int CabinId { get; set; }
 
@@ -297,12 +310,13 @@ namespace WLC.Areas.Races.Pages.Results
 
         }
 
-          public IActionResult OnPostSaveRacer([FromBody] [Bind("RacerId, FirstName, LastName, BoyOrGirl ,Birthate, MemberStatusId, CabinId")] Models.Racers saveRacer)
+          public IActionResult OnPostSaveRacer([FromBody] [Bind("RacerId, FirstName, LastName, BoyOrGirl ,Birthdate,Age, MemberStatusId, CabinId")] Models.Racers saveRacer)
         {
 
             try
             {
-                saveRacer.SetAge();
+                if (saveRacer.Birthdate.HasValue)
+                    saveRacer.SetAge();
                 if (saveRacer.RacerId == 0)
                     _context.Racers.Add(saveRacer);
                 else
@@ -314,7 +328,11 @@ namespace WLC.Areas.Races.Pages.Results
                     updateRacer.Birthdate = saveRacer.Birthdate;
                     updateRacer.CabinId = saveRacer.CabinId;
                     updateRacer.BoyOrGirl = saveRacer.BoyOrGirl;
-                    updateRacer.SetAge();
+                    if (updateRacer.Birthdate == null)
+                        updateRacer.Age = saveRacer.Age;
+                    else
+                       updateRacer.SetAge();
+
                     _context.Racers.Update(updateRacer);
                 }
 

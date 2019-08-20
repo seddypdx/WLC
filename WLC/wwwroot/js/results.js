@@ -14,7 +14,17 @@ $(document).ready(function () {
     });
 
 
+    $('#RaceNext').click(function () {
+        $('#RaceDropdown option:selected').next().attr('selected', 'selected');
+        $(RaceForm).submit();
 
+    });
+
+    $('#RacePrevious').click(function () {
+        $('#RaceDropdown option:selected').prev().attr('selected', 'selected');
+        $(RaceForm).submit();
+
+    });
 });
 
 
@@ -194,6 +204,7 @@ function SaveRacerInfo(raceId) {
     racer.LastName = $('[id*=LastName]').val();
     racer.BoyOrGirl = $('[id*=BoyOrGirl]').val();
     racer.BirthDate =new Date($('[id*=Birthdate]').val());
+    racer.Age = $('[id*=Age]').val();
     racer.MemberStatusId = parseInt($('[id*=MemberStatusId]').val());
     racer.CabinId = parseInt($('[id*=CabinId]').val());
    
@@ -234,21 +245,31 @@ function clearRacerInfo() {
     $('#NewRacer_FirstName').val('');
     $('#NewRacer_LastName').val('');
     $('#NewRacer_BoyOrGirl').val('b');
-    $('#NewRacer_Birthdate').val(date.toISOString().slice(0, 10));
+    $('#NewRacer_Birthdate').val('');
+    $('#NewRacer_Age').val('');
+    $('#NewRacer_CabinId option[value="60"').attr("selected", "selected");
+
 
 }
 
 function setRacerInfo(racer) {
 
-    var date = parseJsonDate(racer.birthdate);
+    if (racer.birthdate !== null) {
+        var date = parseJsonDate(racer.birthdate);
+        $('#NewRacer_Birthdate').val(date.toISOString().slice(0, 10));
+    }
+    else {
+        $('#NewRacer_Birthdate').val('');
+    }
     $('#NewRacer_RacerId').val(racer.racerId);
 
     $('#NewRacer_FirstName').val(racer.firstName);
     $('#NewRacer_LastName').val(racer.lastName);
     $('#NewRacer_BoyOrGirl').val(racer.boyOrGirl);
-    $('#NewRacer_Birthdate').val(date.toISOString().slice(0,10));
+
     $('#NewRacer_MemberStatusId').val(racer.memberStatusId);
     $('#NewRacer_CabinId').val(racer.cabinId);
+    $('#NewRacer_Age').val(racer.age);
 
 }
 

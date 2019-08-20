@@ -8,14 +8,24 @@
 
 <div class="section">
     <div class="container">
-        <form asp-route="Result">
+        <form id="RaceForm" asp-route="Result">
             <div class="row">
-                <div class="col-md-6">
-                    <select asp-for="ActiveRaceId" asp-items="@Model.RaceList" class="form-control" onchange="this.form.submit()">
+                <div class="col-md-2">
+                    <button id="RacePrevious" type="button" class="btn btn-primary">
+                        << Previous
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <select id="RaceDropdown" asp-for="ActiveRaceId" asp-items="@Model.RaceList" class="form-control" onchange="this.form.submit()">
                         <option value="">(select one)</option>
                     </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2">
+                    <button id="RaceNext" type="button" class="btn btn-primary">
+                        Next >>
+                    </button>
+                </div>
+                <div class="col-md-2">
                     <span>Swimming</span> <input asp-for="IsBooting" value="false" onchange="this.form.submit()" type="radio">
                     <span>Boating</span> <input asp-for="IsBooting" value="true" onchange="this.form.submit()" type="radio">
                 </div>
