@@ -84,7 +84,7 @@ namespace WLC.Areas.Races.Services
                     teamMember.Ribbon = team.Ribbon;
                     teamMember.PointsPlace = team.PointsPlace;
 
-                    if (team.DisqualifiedCount > 0 ||  teamMember.Racer.MemberStatusId != (int)MemberStatusEnum.Member)
+                    if (team.DisqualifiedCount > 0 ||  teamMember.Racer.MemberStatusId != (int)MemberStatusEnum.Member || teamMember.Racer.Age > 18)
                         teamMember.Points = 0;
                     else
                         teamMember.Points = race.GetPointsForRibon(teamMember.Ribbon);
@@ -111,7 +111,7 @@ namespace WLC.Areas.Races.Services
 
             foreach (var entry in entries)
             {
-                if (entry.Race.RacePoints != "Points")
+                if (entry.Race.RacePoints == "Participation Ribbon Only" || entry.Race.RacePoints == "Just for Fun: 0 Points")
                     entry.Comments = entry.Race.RacePoints;
                 else
                 {
