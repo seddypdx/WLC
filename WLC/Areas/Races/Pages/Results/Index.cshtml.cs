@@ -315,8 +315,8 @@ namespace WLC.Areas.Races.Pages.Results
 
             try
             {
-                if (saveRacer.Birthdate.HasValue)
-                    saveRacer.SetAge();
+               // if (saveRacer.Birthdate.HasValue)
+               //     saveRacer.SetAge();
                 if (saveRacer.RacerId == 0)
                     _context.Racers.Add(saveRacer);
                 else
@@ -328,10 +328,10 @@ namespace WLC.Areas.Races.Pages.Results
                     updateRacer.Birthdate = saveRacer.Birthdate;
                     updateRacer.CabinId = saveRacer.CabinId;
                     updateRacer.BoyOrGirl = saveRacer.BoyOrGirl;
-                    if (updateRacer.Birthdate == null)
+                   // if (updateRacer.Birthdate == null)
                         updateRacer.Age = saveRacer.Age;
-                    else
-                       updateRacer.SetAge();
+                  //  else
+                  //     updateRacer.SetAge();
 
                     _context.Racers.Update(updateRacer);
                 }

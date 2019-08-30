@@ -25,8 +25,19 @@ $(document).ready(function () {
         $(RaceForm).submit();
 
     });
+
+   
+
+
 });
 
+
+function RefreshPage(raceId) {
+    loadEntrants(raceId);
+    loadQualified(raceId);
+
+
+}
 
 
 function AddRacerToRace(racerId, raceId) {
