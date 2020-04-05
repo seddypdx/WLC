@@ -29,7 +29,7 @@
             @foreach (var result in teamGroup.TeamMembers)
                     {
             <div>
-                <p> @result.Racer.LastName, @result.Racer.FirstName (@result.Racer.Age)</p>
+                <p> @result.Racer.LastName, @result.Racer.FirstName (@result.Racer.GetAge(DateTime.Now))</p>
                 <p>
                     <span>@result.Place /  @result.PointsPlace</span>
                     <span>/ @result.Points</span>

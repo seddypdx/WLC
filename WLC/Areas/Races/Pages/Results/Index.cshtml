@@ -47,7 +47,9 @@
         <div class="row">
             <div class="col-md-6" id="Selections">
                 <div>
-                    <h6>Selections <a id="HideSelections" href="#">(hide)</a> </h6>
+                    <h6>
+                        Selections <a id="HideSelections" href="#">(hide)</a> <a id="ShowAll" href="javascript:loadQualifiedAll(@Model.ActiveRace.RaceId)">(Show All)</a>
+                    </h6>
                     <p>
                         <input type="text" id="myFilter" onkeyup="filterCards()" placeholder="Search for names.." />
                         <div id="gridQualified">
@@ -119,11 +121,11 @@
                             <input asp-for="NewRacer.Birthdate" class="form-control" />
                             <span asp-validation-for="NewRacer.Birthdate" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
+                        @*<div class="form-group">
                             <label asp-for="NewRacer.Age" class="control-label"></label>
                             <input asp-for="NewRacer.Age" class="form-control" />
                             <span asp-validation-for="NewRacer.Age" class="text-danger"></span>
-                        </div>
+                        </div>*@
                         <div class="form-group">
                             <label asp-for="NewRacer.MemberStatusId" class="control-label"></label>
                             <select asp-for="NewRacer.MemberStatusId" class="form-control" asp-items="Model.MemberStatusList"></select>

@@ -24,7 +24,7 @@ namespace WLC.Models
         [Display(Name = "Boy Or Girl")]
         [StringLength(1)]
         public string BoyOrGirl { get; set; }
-        public int Age { get; set; }
+       // public int Age { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Birth Date")]
@@ -40,13 +40,22 @@ namespace WLC.Models
         public virtual MemberStatuses MemberStatus { get; set; }
         public virtual ICollection<Results> Results { get; set; }
 
-        internal void SetAge()
+        //internal void SetAge()
+        //{
+        //    var today = DateTime.Today;
+        //    // Calculate the age.
+        //    Age = today.Year - Birthdate.GetValueOrDefault().Year;
+        //    // Go back to the year the person was born in case of a leap year
+        //    if (Birthdate.GetValueOrDefault().Date > today.AddYears(-Age)) Age--;
+        //}
+
+        public int GetAge(DateTime asOfDate)
         {
-            var today = DateTime.Today;
-            // Calculate the age.
-            Age = today.Year - Birthdate.GetValueOrDefault().Year;
+            var age = asOfDate.Year - Birthdate.GetValueOrDefault().Year;
             // Go back to the year the person was born in case of a leap year
-            if (Birthdate.GetValueOrDefault().Date > today.AddYears(-Age)) Age--;
+            if (Birthdate.GetValueOrDefault().Date > asOfDate.AddYears(-age)) age--;
+
+            return age;
         }
     }
 }

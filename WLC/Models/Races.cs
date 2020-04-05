@@ -13,14 +13,14 @@ namespace WLC.Models
 
         public int RaceId { get; set; }
         public string RaceName { get; set; }
-        public double? Year { get; set; }
+        public int Year { get; set; }
         public string RacePoints { get; set; }
-        public double? Participants { get; set; }
+        public int Participants { get; set; }
         public string RaceBoyOrGirl { get; set; }
-        public double? MinimumAge { get; set; }
-        public double? MaximumAge { get; set; }
-        public double? SortOrder { get; set; }
-        public int? RaceOrder { get; set; }
+        public int MinimumAge { get; set; }
+        public int MaximumAge { get; set; }
+        public int SortOrder { get; set; }
+        public int RaceOrder { get; set; }
         public bool IsBoating { get; set; }
 
         [NotMapped]

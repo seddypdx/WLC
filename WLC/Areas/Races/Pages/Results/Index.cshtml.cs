@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using WLC.Models;
+using WLC.Services;
 
 namespace WLC.Areas.Races.Pages.Results
 {
@@ -87,14 +88,14 @@ namespace WLC.Areas.Races.Pages.Results
             MemberStatusList = new SelectList(_context.MemberStatuses.ToList().OrderBy(x => x.MemberStatus), "MemberStatusId", "MemberStatus");
 
 
-            Results = _context.Results.Where(x => x.Year == 2019 && x.RaceId == ActiveRaceId)
+            Results = _context.Results.Where(x => x.Year == Globals.GetActiveYear(HttpContext) && x.RaceId == ActiveRaceId)
                                       .Include(x => x.Racer).ThenInclude(x => x.Cabin)
                                       .OrderBy(x => x.Place).ThenBy(x => x.TeamId);
 
 
             AvailableRacers = _context.Racers
-                           .Where(x => x.Age >= ActiveRace.MinimumAge
-                                && x.Age <= ActiveRace.MaximumAge
+                           .Where(x => x.GetAge(DateTime.Now) >= ActiveRace.MinimumAge
+                                && x.GetAge(DateTime.Now) <= ActiveRace.MaximumAge
                                 && (x.BoyOrGirl == ActiveRace.RaceBoyOrGirl || ActiveRace.RaceBoyOrGirl == "b/g")
                                 && !_context.Results.Any(p => p.RaceId==ActiveRace.RaceId && p.RacerId == x.RacerId && p.Year ==2019)
                                 && x.MemberStatusId != (int) MemberStatusEnum.Inactive
@@ -163,6 +164,35 @@ namespace WLC.Areas.Races.Pages.Results
             };
         }
 
+
+        public PartialViewResult OnGetQualifiedAll(int raceId)
+        {
+            ViewData["RaceId"] = raceId;
+            ViewData["TeamRace"] = false;
+
+            if (raceId > 0)
+            {
+                ActiveRaceId = raceId;
+                ActiveRace = _context.Races.FirstOrDefault(x => x.RaceId == ActiveRaceId);
+                ViewData["TeamRace"] = ActiveRace.Participants > 1;
+            }
+
+
+            SetupDetails();
+
+            AvailableRacers = _context.Racers
+                       .Where(x =>  x.MemberStatusId != (int)MemberStatusEnum.Inactive
+                            )
+                        .Include(x => x.Cabin)
+                        .OrderBy(x => x.LastName);
+
+
+            return new PartialViewResult
+            {
+                ViewName = "_ResultQualified",
+                ViewData = new ViewDataDictionary<IQueryable<WLC.Models.Racers>>(ViewData, AvailableRacers)
+            };
+        }
         #region ajaxhandlers
 
         public IActionResult OnGetEnterRacer([FromQuery] int racerId, int raceId)
@@ -179,7 +209,7 @@ namespace WLC.Areas.Races.Pages.Results
                     TeamId = GetNextTeamId(raceId),
                     RaceId = raceId,
                     RacerId = racerId,
-                    Year = 2019
+                    Year = Globals.GetActiveYear(HttpContext)
 
                 };
                 _context.Results.Add(result);
@@ -212,7 +242,7 @@ namespace WLC.Areas.Races.Pages.Results
                         TeamId = teamId,
                         RaceId = addTeamRequest.raceId,
                         RacerId =racerId,
-                        Year = 2019
+                        Year = Globals.GetActiveYear(HttpContext)
 
                     };
                     _context.Results.Add(result);
@@ -232,7 +262,7 @@ namespace WLC.Areas.Races.Pages.Results
         private int GetNextTeamId(int raceId)
         {
             // get the highest team Id for this race
-            var lastResult = _context.Results.Where(x => x.Year == 2019
+            var lastResult = _context.Results.Where(x => x.Year == Globals.GetActiveYear(HttpContext)
                                                         && x.RaceId == raceId)
                                          .OrderByDescending(x => x.TeamId).FirstOrDefault();
 
@@ -266,7 +296,7 @@ namespace WLC.Areas.Races.Pages.Results
             try
             {
 
-                var results = _context.Results.Where(x => x.Year == 2019 && x.TeamId == teamId && x.RaceId == raceId);
+                var results = _context.Results.Where(x => x.Year == Globals.GetActiveYear(HttpContext) && x.TeamId == teamId && x.RaceId == raceId);
                 foreach (var result in results)
                 {
                     result.Place = place;
@@ -292,7 +322,7 @@ namespace WLC.Areas.Races.Pages.Results
             try
             {
      
-                var results = _context.Results.Where(x => x.Year==2019 && x.TeamId == teamId && x.RaceId==raceId);
+                var results = _context.Results.Where(x => x.Year== Globals.GetActiveYear(HttpContext) && x.TeamId == teamId && x.RaceId==raceId);
                 foreach(var result in results)
                      _context.Remove(result);
 
@@ -329,7 +359,7 @@ namespace WLC.Areas.Races.Pages.Results
                     updateRacer.CabinId = saveRacer.CabinId;
                     updateRacer.BoyOrGirl = saveRacer.BoyOrGirl;
                    // if (updateRacer.Birthdate == null)
-                        updateRacer.Age = saveRacer.Age;
+                  //      updateRacer.Age = saveRacer.Age;
                   //  else
                   //     updateRacer.SetAge();
 

@@ -7,11 +7,13 @@
     @if (Model != null)
     {
         var teamGroups = Model.GroupBy(i => new { i.Place, i.TeamId });
-
+        
+        
         foreach (var teamGroup in teamGroups)
         {
             var repTeamGroup = teamGroup.FirstOrDefault();
 
+           
             <div class="card w-75 text-white mb-3 place_@repTeamGroup.Place">
 
 
@@ -25,7 +27,7 @@
                     @foreach (var result in teamGroup)
                     {
                     <div>
-                        <p> @result.Racer.LastName, @result.Racer.FirstName (@result.Racer.Age)</p>
+                        <p> @result.Racer.LastName, @result.Racer.FirstName (@result.Racer.GetAge(DateTime.Now))</p>
                     </div>
                     }
                     <div class="entrants-positions">

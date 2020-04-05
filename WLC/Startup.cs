@@ -50,10 +50,15 @@ namespace WLC
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(120);//You can set Time
+                options.IdleTimeout = TimeSpan.FromMinutes(480);//You can set Time
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
+                options.AllowAreas = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

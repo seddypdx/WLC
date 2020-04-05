@@ -84,7 +84,7 @@ namespace WLC.Areas.Races.Services
                     teamMember.Ribbon = team.Ribbon;
                     teamMember.PointsPlace = team.PointsPlace;
 
-                    if (team.DisqualifiedCount > 0 ||  teamMember.Racer.MemberStatusId != (int)MemberStatusEnum.Member || teamMember.Racer.Age > 18)
+                    if (team.DisqualifiedCount > 0 ||  teamMember.Racer.MemberStatusId != (int)MemberStatusEnum.Member || teamMember.Racer.GetAge(DateTime.Now) > 18)
                         teamMember.Points = 0;
                     else
                         teamMember.Points = race.GetPointsForRibon(teamMember.Ribbon);
@@ -116,8 +116,8 @@ namespace WLC.Areas.Races.Services
                 else
                 {
                     entry.Comments = "! Member";
-                    if (entry.Racer.Age > entry.Race.MaximumAge
-                        || (entry.Racer.Age < entry.Race.MinimumAge && entry.Racer.MemberStatus.MemberStatus != "* Retiree")
+                    if (entry.Racer.GetAge(DateTime.Now) > entry.Race.MaximumAge
+                        || (entry.Racer.GetAge(DateTime.Now) < entry.Race.MinimumAge && entry.Racer.MemberStatus.MemberStatus != "* Retiree")
                         || ((entry.Race.RaceBoyOrGirl != entry.Racer.BoyOrGirl) && entry.Race.RaceBoyOrGirl != "b/g"))
                         entry.Comments = "Not Qualified";
                     else

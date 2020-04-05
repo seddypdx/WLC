@@ -9,9 +9,9 @@ namespace WLC.Models
         public int Year { get; set; }
         public int? RaceId { get; set; }
         public int? RacerId { get; set; }
-        public double? TeamId { get; set; }
-        public double? Place { get; set; }
-        public double? PointsPlace { get; set; }
+        public int? TeamId { get; set; }
+        public int? Place { get; set; }
+        public int? PointsPlace { get; set; }
         public double? Points { get; set; }
         public string Ribbon { get; set; }
         public string Comments { get; set; }

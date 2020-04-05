@@ -12,7 +12,7 @@
                 <h7 class="card-title">
                     @if (!(bool)ViewData["TeamRace"])
                     {
-                        <a class="text-white" onclick='return EditRacer(@racer.RacerId)' href="">@racer.LastName, @racer.FirstName (@racer.Age)</a>
+                        <a class="text-white" onclick='return EditRacer(@racer.RacerId)' href="">@racer.LastName, @racer.FirstName (@racer.GetAge(DateTime.Now))</a>
                         <div>
                             <span class="cabinName">@racer.Cabin.CabinName</span><span class="fa-pull-right" onclick='return AddRacerToRace(@racer.RacerId,@ViewData["RaceId"])'><i class="addRacerSymbol fa fa-user-plus"></i></span>
                         </div>
@@ -20,7 +20,7 @@
                     }
                     else
                     {
-                        <a class="text-white" onclick='return EditRacer(@racer.RacerId)' href="">@racer.LastName, @racer.FirstName (@racer.Age)</a><input value="@racer.RacerId" type="checkbox" />
+                        <a class="text-white" onclick='return EditRacer(@racer.RacerId)' href="">@racer.LastName, @racer.FirstName (@racer.GetAge(DateTime.Now)</a><input value="@racer.RacerId" type="checkbox" />
                         <div>
                             <span class="cabinName">@racer.Cabin.CabinName</span><span class="fa-pull-right" onclick='return AddTeamToRace(@ViewData["RaceId"])'><i class="addRacerSymbol fa fa-user-plus"></i></span>
                         </div>

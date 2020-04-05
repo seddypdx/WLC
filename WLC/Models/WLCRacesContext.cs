@@ -22,6 +22,8 @@ namespace WLC.Models
         public virtual DbSet<Results> Results { get; set; }
         public virtual DbSet<RibbonsInStock> RibbonsInStock { get; set; }
         public virtual DbSet<Years> Years { get; set; }
+        public virtual DbSet<Member> Members { get; set; }
+        public virtual DbSet<Checkin> Checkins { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -60,6 +62,23 @@ namespace WLC.Models
                 entity.Property(e => e.MemberStatus)
                     .IsRequired()
                     .HasMaxLength(20);
+            });
+
+            modelBuilder.Entity<Member>(entity =>
+            {
+                entity.HasKey(e => e.MemberId);
+                entity.Property(e => e.CabinId).HasColumnName("Cabin");
+
+            });
+
+            modelBuilder.Entity<Checkin>(entity =>
+            {
+
+                entity.HasKey(e => e.CheckinId);
+
+                entity.Property(e => e.MemberId).HasColumnName("Member ID");
+
+
             });
 
             modelBuilder.Entity<Racers>(entity =>

@@ -294,6 +294,10 @@ function loadQualified(raceId) {
 
 }
 
+function loadQualifiedAll(raceId) {
+    $('#gridQualified').load('/Races/Results?handler=QualifiedAll');
+
+}
 
 function filterCards() {
     var input, filter, cards, cardContainer, h5, title, i, cabin;
