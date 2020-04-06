@@ -18,6 +18,7 @@ namespace WLC.Areas.Checkin.Pages
         public IndexModel(WLC.Models.WLCRacesContext context)
         {
             _context = context;
+            InitializeLookups();
 
         }
 
@@ -28,20 +29,46 @@ namespace WLC.Areas.Checkin.Pages
 
         public SelectList CabinList;
         public SelectList MemberList;
+        public int CabinId;
+        public int MemberId;
+        public IList<Member> AssociatedMembers;
+        public bool ValidateCabin;
 
         public void InitializeLookups()
         {
-            CabinList = new SelectList(_context.Cabins.ToList().OrderBy(x => x.CabinName), "CabinId", "CabinName");
 
-            if (Checkin != null && Checkin.CabinId >0 )
+            if (CabinId >0 )
             {
-                MemberList = new SelectList(_context.Members.Where(x => x.CabinId == Checkin.CabinId && x.Deceased == false &&
+                MemberList = new SelectList(_context.Members.Where(x => x.CabinId == CabinId && x.Deceased == false &&
                                              (x.MemberTypeId == 2 || x.MemberTypeId == 4 || x.MemberTypeId == 12 || x.MemberTypeId == 15 || x.MemberTypeId == 21)).ToList().OrderBy(x => x.FirstName), "MemberId", "FullName");
+            }
+
+
+
+            if (MemberList == null || !MemberList.Any(x => x.Value == MemberId.ToString()))  // if cabin changed to 
+                MemberId = 0;
+
+            if (MemberId > 0)
+            {
+                AssociatedMembers = _context.Members.Where(x => x.SecondaryMemberId == MemberId || x.MemberId == MemberId || ((x.MemberTypeId==3 || x.MemberTypeId==6) &&  x.PrimaryMemberId== MemberId)).ToList();
             }
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+
+            CabinId = GetCabinFromCookie();
+            if (CabinId == 0) // no cabin set yet
+            {
+                return Redirect("./SetCabin");
+            }
+
+            // on any get start with blank checkin
+           Checkin = new Models.Checkin()
+                {
+                    CheckInTime = DateTime.Now
+                };
+
 
             // see if the user has been here before
             var memberId = GetMemberFromCookie();
@@ -49,16 +76,10 @@ namespace WLC.Areas.Checkin.Pages
             {
                 FindLastCheckin(memberId);
             }
-            
 
-            if (Checkin == null)
-            {
-                Checkin = new Models.Checkin()
-                {
-                    CheckInTime = DateTime.Now
-                };
-            }
 
+
+            MemberId = Checkin.MemberId;
             InitializeLookups();
 
 
@@ -68,26 +89,21 @@ namespace WLC.Areas.Checkin.Pages
 
         private void FindLastCheckin(int memberId)
         {
-            var lastCheckin = _context.Checkins.OrderByDescending(x => x.CheckinId)
-                                        .FirstOrDefault(x => x.MemberId == memberId);
-            var member = _context.Members.FirstOrDefault(x => x.MemberId == memberId);
+           var member = _context.Members.FirstOrDefault(x => x.MemberId == memberId);
 
             if (member == null)
             {
                 return;
             }
 
-            if (Checkin != null && member.CabinId != Checkin.CabinId && Checkin.CabinId > 0)
-            {
-                return;
-            }
+            var lastCheckin = _context.Checkins.OrderByDescending(x => x.CheckinId)
+                             .FirstOrDefault(x => x.MemberId == memberId);
+
+     
 
             if (lastCheckin != null)
             {
-                // need to set the cabin too
-                if (member != null && member.CabinId != null)
-                    lastCheckin.CabinId = member.CabinId;
-
+  
                 if (lastCheckin.CheckOutTime == null)
                 {
                     Checkin = lastCheckin;
@@ -96,7 +112,6 @@ namespace WLC.Areas.Checkin.Pages
                 else
                     Checkin = new Models.Checkin()
                     {
-                        CabinId = lastCheckin.CabinId,
                         MemberId = lastCheckin.MemberId,
                         CheckInTime = DateTime.Now
                     };
@@ -104,20 +119,29 @@ namespace WLC.Areas.Checkin.Pages
             }
         }
 
-        public async Task<IActionResult> OnPostAsync(string CheckinButton, string CheckoutButton)
+        public async Task<IActionResult> OnPostChangeMemberAsync(int memberId)
         {
-            if (string.IsNullOrEmpty(CheckinButton) && string.IsNullOrEmpty(CheckoutButton))
-            {
-                ModelState.Clear();
 
-                if (Checkin.MemberId > 0 && Checkin.CheckinId == 0)
-                {
-                    FindLastCheckin(Checkin.MemberId);
-                }
+            CabinId = GetCabinFromCookie();
+
+            MemberId = memberId;
+            ModelState.Clear();
+
+            if (Checkin.MemberId > 0 && Checkin.CheckinId == 0)
+            {
+                FindLastCheckin(Checkin.MemberId);
+            }
+            Checkin.MemberId = MemberId;
 
                 InitializeLookups();
                 return Page();
-            }
+
+          
+        }
+
+        public async Task<IActionResult> OnPostRecordCheckinAsync()
+        {
+     
 
             if (!ModelState.IsValid)
             {
@@ -162,22 +186,20 @@ namespace WLC.Areas.Checkin.Pages
 
             Success = true;
 
-            SaveCookieForReturn();
+            SetMemberCookie(Checkin.MemberId);
 
             return Page();
         }
 
-        private void SaveCookieForReturn()
+
+
+        private void SetMemberCookie(int memberId)
         {
             try
             {
-                if (Checkin.MemberId == 0)
-                    return;
-
+ 
                 CookieOptions option = new CookieOptions();
-
                 option.Expires = DateTime.Now.AddDays(60);
-
                 Response.Cookies.Append("MemberId", Checkin.MemberId.ToString(), option);
 
             }
@@ -186,6 +208,8 @@ namespace WLC.Areas.Checkin.Pages
 
             }
         }
+
+  
 
         private int GetMemberFromCookie()
         {
@@ -198,6 +222,21 @@ namespace WLC.Areas.Checkin.Pages
 
             if (int.TryParse(x, out memberId))
                 return memberId;
+
+            return 0;
+        }
+
+        private int GetCabinFromCookie()
+        {
+            var x = Request.Cookies["CabinId"];
+
+            if (string.IsNullOrEmpty(x))
+                return 0;
+
+            int cabinId = 0;
+
+            if (int.TryParse(x, out cabinId))
+                return cabinId;
 
             return 0;
         }

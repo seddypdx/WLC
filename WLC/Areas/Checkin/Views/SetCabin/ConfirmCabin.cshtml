@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Wauna Lake Check-in</title>
+</head>
+<body>
+
+    <h4>Confirm Cabin</h4>
+    <hr />
+    <form id="ConfirmCabin" action="SetCabin" method="post">
+
+        <div class="row">
+            <div class="col-md-4">
+                <label class="control-label">Is this your cabin?</label>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+
+                <div class="form-group">
+                    <input type="text" readonly="readonly" name="CabinDescription" id="CabinLookup" class="form-control" value="@ViewBag.CabinDescription">
+                    <input type="hidden" name="CabinId"  value="@ViewBag.CabinId">
+                </div>
+            </div>
+          </div>
+            <div class="row">
+                <div class="col-md-4">
+
+                    <div class="form-group">
+                        <input name="ConfirmCabin" type="submit" value="Yes" class="btn btn-primary" />
+                        <input name="RejectCabin" type="submit" value="No" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+    </form>
+</body>
+</html>

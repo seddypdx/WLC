@@ -13,67 +13,87 @@
 </head>
 <body>
 
-    <h4>Checkin</h4>
+    <h4>Check-in</h4>
     <hr />
+ 
 
-    @if (Model.Success)
-    {
-          <div class="row">
-        <div class="col-md-4">
-            @if(Model.Checkin.CheckOutTime.HasValue)
+            @if (Model.Success)
             {
-               <p>See you next time.</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        @if (Model.Checkin.CheckOutTime.HasValue)
+                        {
+                            <p>See you next time.</p>
+                        }
+                        else
+                        {
+                            <p>All checked in.</p>
+                            <div>@Model.Checkin.Note</div>
+                        }
+                    </div>
+                </div>
+
             }
             else
-            { 
-               <p>Welcome - Have as good stay.</p>
-            }
-            </div>
-        </div>
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <form id="CabinForm" asp-page-handler="ChangeMember" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label class="control-label">Member:</label>
+                                <select id="MemberLookup" asp-items="@Model.MemberList" asp-for="MemberId" class="form-control"><option>(select one)</option></select>
+                                <span asp-validation-for="MemberId" class="text-danger"></span>
+                            </div>
+
+                        </form>
+                        <form id="CheckinForm" asp-page-handler="RecordCheckin" method="post">
+                            <input type="hidden" asp-for="Checkin.CheckinId" />
+                            <input type="hidden" asp-for="Checkin.MemberId" />
+
+                            @if (Model.AssociatedMembers != null && Model.Checkin.CheckinId == 0)
+                            {
+                                @foreach (var associatedMemeber in Model.AssociatedMembers)
+                                {
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input type="checkbox" value="@associatedMemeber.FullName" class="form-check-input member-checkbox" id="chk_@associatedMemeber.MemberId" />
+                                            <label class="form-check-label" for="chk_@associatedMemeber.MemberId">@associatedMemeber.FullName</label>
+
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            <div class="form-group">
+                                <label asp-for="Checkin.Note" class="control-label">Additional Members/Guests:</label>
+                                <textarea maxlength="8000" rows="4" asp-for="Checkin.Note" class="form-control"></textarea>
+                                <span asp-validation-for="Checkin.Note" class="text-danger"></span>
+                            </div>
+                            @if (Model.Checkin.CheckinId == 0)
+                            {
+                                <div class="form-group">
+                                    <input name="CheckinButton" type="submit" value="Check In" class="btn btn-primary" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <input name="CheckOutButton" type="submit" value="Check Out" class="btn btn-primary" />
+                                </div>
+                            }
+
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                    <a href="~/Checkin/SetCabin">Wrong Cabin</a>
+                </div>
+
+
 
     }
-    else
-    {
-    <div class="row">
-        <div class="col-md-4">
-            <form id="CheckinForm" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Checkin.CheckinId" />
-                <div class="form-group">
-                    <label class="control-label">Cabin:</label>
-                    <select id="CabinLookup" class="form-control" asp-for="Checkin.CabinId" asp-items="@Model.CabinList"><option>(Select One)</option></select>
-                    <span asp-validation-for="Checkin.MemberId" class="text-danger"></span>
-                </div>
 
-                <div class="form-group">
-                    <label class="control-label">Member:</label>
-                    <select asp-items="@Model.MemberList" asp-for="Checkin.MemberId" class="form-control"><option>(select one)</option></select>
-                    <span asp-validation-for="Checkin.MemberId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Checkin.Note" class="control-label">Additional Members/Guests:</label>
-                    <textarea maxlength="8000" rows="4" asp-for="Checkin.Note" class="form-control"></textarea>
-                    <span asp-validation-for="Checkin.Note" class="text-danger"></span>
-                </div>
-                @if (Model.Checkin.CheckinId == 0)
-                {
-                    <div class="form-group">
-                        <input name="CheckinButton" type="submit" value="Check In" class="btn btn-primary" />
-                    </div>
-                }
-                else
-                {
-                    <div class="form-group">
-                        <input name="CheckOutButton" type="submit" value="Check Out" class="btn btn-primary" />
-                    </div>
-
-                }
-
-            </form>
-        </div>
-    </div>
-
-    }
 
     @section Scripts {
         <script src="~/js/checkin.js" asp-append-version="true"></script>
@@ -82,6 +102,6 @@
 
     }
 
-   
+
 </body>
 </html>

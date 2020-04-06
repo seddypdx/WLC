@@ -14,6 +14,7 @@ namespace WLC.Models
         public int CabinId { get; set; }
         public int? PrimaryMemberId { get; set; }
         public int? SecondaryMemberId { get; set; }
+        public int? Spouse { get; set; }
         public int? MemberTypeId { get; set; }
         public bool Deceased { get; set; }
         [NotMapped]
