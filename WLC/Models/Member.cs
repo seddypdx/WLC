@@ -17,6 +17,11 @@ namespace WLC.Models
         public int? Spouse { get; set; }
         public int? MemberTypeId { get; set; }
         public bool Deceased { get; set; }
+        public string HomeCell { get; set; }
+
+
+        public Cabins Cabin { get; set; }
+
         [NotMapped]
         public string FullName
         {

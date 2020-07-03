@@ -16,5 +16,7 @@ namespace WLC.Models
         public DateTime CheckInTime { get; set; }
         public DateTime? CheckOutTime { get; set; }
 
+        public Member Member { get; set; }
+
     }
 }

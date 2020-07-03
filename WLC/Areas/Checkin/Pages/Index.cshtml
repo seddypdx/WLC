@@ -13,82 +13,107 @@
 </head>
 <body>
 
-    <h4>Check-in</h4>
+    <h4>Wauna Lake Check-in</h4>
     <hr />
- 
 
-            @if (Model.Success)
-            {
-                <div class="row">
-                    <div class="col-md-4">
-                        @if (Model.Checkin.CheckOutTime.HasValue)
-                        {
-                            <p>See you next time.</p>
-                        }
-                        else
-                        {
-                            <p>All checked in.</p>
-                            <div>@Model.Checkin.Note</div>
-                        }
+
+    @if (Model.Success)
+    {
+        @if (Model.Checkin.CheckOutTime.HasValue)
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <p>See you next time.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <textarea readonly="readonly" rows="4" asp-for="Checkin.Note" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Return <a asp-page="./Index">Here</a> when you come back.</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <p>All checked in.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <textarea readonly="readonly" rows="4" asp-for="Checkin.Note" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Return <a asp-page="./Index">Here</a> to check out.</p>
+                </div>
+            </div>
+
+        }
+
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <form id="CabinForm" asp-page-handler="ChangeMember" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="control-label">Member:</label>
+                        <select id="MemberLookup" asp-items="@Model.MemberList" asp-for="MemberId" class="form-control"><option>(select one)</option></select>
+                        <span asp-validation-for="MemberId" class="text-danger"></span>
                     </div>
-                </div>
 
-            }
-            else
-            {
-                <div class="row">
-                    <div class="col-md-4">
-                        <form id="CabinForm" asp-page-handler="ChangeMember" method="post">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </form>
+                <form id="CheckinForm" asp-page-handler="RecordCheckin" method="post">
+                    <input type="hidden" asp-for="Checkin.CheckinId" />
+                    <input type="hidden" asp-for="Checkin.MemberId" />
+
+                    @if (Model.AssociatedMembers != null && Model.Checkin.CheckinId == 0)
+                    {
+                        @foreach (var associatedMemeber in Model.AssociatedMembers)
+                        {
                             <div class="form-group">
-                                <label class="control-label">Member:</label>
-                                <select id="MemberLookup" asp-items="@Model.MemberList" asp-for="MemberId" class="form-control"><option>(select one)</option></select>
-                                <span asp-validation-for="MemberId" class="text-danger"></span>
-                            </div>
+                                <div class="form-check">
+                                    <input type="checkbox" value="@associatedMemeber.FullName" class="form-check-input member-checkbox" id="chk_@associatedMemeber.MemberId" />
+                                    <label class="form-check-label" for="chk_@associatedMemeber.MemberId">@associatedMemeber.FullName</label>
 
-                        </form>
-                        <form id="CheckinForm" asp-page-handler="RecordCheckin" method="post">
-                            <input type="hidden" asp-for="Checkin.CheckinId" />
-                            <input type="hidden" asp-for="Checkin.MemberId" />
-
-                            @if (Model.AssociatedMembers != null && Model.Checkin.CheckinId == 0)
-                            {
-                                @foreach (var associatedMemeber in Model.AssociatedMembers)
-                                {
-                                    <div class="form-group">
-                                        <div class="form-check">
-                                            <input type="checkbox" value="@associatedMemeber.FullName" class="form-check-input member-checkbox" id="chk_@associatedMemeber.MemberId" />
-                                            <label class="form-check-label" for="chk_@associatedMemeber.MemberId">@associatedMemeber.FullName</label>
-
-                                        </div>
-                                    </div>
-                                }
-                            }
-                            <div class="form-group">
-                                <label asp-for="Checkin.Note" class="control-label">Additional Members/Guests:</label>
-                                <textarea maxlength="8000" rows="4" asp-for="Checkin.Note" class="form-control"></textarea>
-                                <span asp-validation-for="Checkin.Note" class="text-danger"></span>
-                            </div>
-                            @if (Model.Checkin.CheckinId == 0)
-                            {
-                                <div class="form-group">
-                                    <input name="CheckinButton" type="submit" value="Check In" class="btn btn-primary" />
                                 </div>
-                            }
-                            else
-                            {
-                                <div class="form-group">
-                                    <input name="CheckOutButton" type="submit" value="Check Out" class="btn btn-primary" />
-                                </div>
-                            }
-
-                        </form>
+                            </div>
+                        }
+                    }
+                    <div class="form-group">
+                        <label asp-for="Checkin.Note" class="control-label">Additional Members/Guests:</label>
+                        <textarea maxlength="8000" rows="4" asp-for="Checkin.Note" class="form-control"></textarea>
+                        <span asp-validation-for="Checkin.Note" class="text-danger"></span>
                     </div>
-                </div>
+                    @if (Model.Checkin.CheckinId == 0)
+                    {
+                        <div class="form-group">
+                            <input name="CheckinButton" type="submit" value="Check In" class="btn btn-primary" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <input name="CheckOutButton" type="submit" value="Check Out" class="btn btn-primary" />
+                        </div>
+                    }
 
-                <div>
-                    <a href="~/Checkin/SetCabin">Wrong Cabin</a>
-                </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a href="~/Checkin/SetCabin">Wrong Cabin</a>
+        </div>
 
 
 

@@ -20,6 +20,12 @@
 
 
   <ItemGroup>
+    <Content Update="Areas\Checkin\Views\SetCabin\ConfirmCabin.cshtml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\Checkin\Views\SetCabin\Index.cshtml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\documents\DivingJudging.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -50,7 +50,7 @@ namespace WLC.Areas.Checkin.Pages
 
             if (MemberId > 0)
             {
-                AssociatedMembers = _context.Members.Where(x => x.SecondaryMemberId == MemberId || x.MemberId == MemberId || ((x.MemberTypeId==3 || x.MemberTypeId==6) &&  x.PrimaryMemberId== MemberId)).ToList();
+                AssociatedMembers = _context.Members.Where(x => (x.SecondaryMemberId == MemberId || x.MemberId == MemberId || ((x.MemberTypeId==3 || x.MemberTypeId==6) &&  x.PrimaryMemberId== MemberId) && x.Deceased==false)).ToList();
             }
         }
 
@@ -60,7 +60,7 @@ namespace WLC.Areas.Checkin.Pages
             CabinId = GetCabinFromCookie();
             if (CabinId == 0) // no cabin set yet
             {
-                return Redirect("./SetCabin");
+                return Redirect("~/Checkin/SetCabin");
             }
 
             // on any get start with blank checkin

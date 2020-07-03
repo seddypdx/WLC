@@ -1,0 +1,54 @@
+﻿@page
+@model WLC.Areas.Checkin.Pages.OnSiteModel
+@{
+}
+
+
+<table class="table table-striped table-responsive-sm" >
+    <thead>
+        <tr>
+            <th>
+                Cabin
+            </th>
+            <th>
+                Primary Member
+            </th>
+            <th>
+                Checkin Details
+            </th>
+            <th>
+                Check in time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OnSiteList.OrderBy(x=> x.Member.CabinId).ThenBy(y=>y.CheckInTime))
+        {
+        <tr>
+            <td>
+                <div>
+                    @Html.DisplayFor(modelItem => item.Member.Cabin.CabinName)
+                </div>
+                <div>
+                    @Html.DisplayFor(modelItem => item.Member.Cabin.CabinPhone)
+                </div>
+            </td>
+            <td>
+                <div>
+                    @Html.DisplayFor(modelItem => item.Member.FullName)
+                </div>
+                <div>
+                    @Html.DisplayFor(modelItem => item.Member.HomeCell)
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckInTime)
+            </td>
+
+        </tr>
+        }
+    </tbody>
+</table>
