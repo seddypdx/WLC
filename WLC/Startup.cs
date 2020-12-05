@@ -46,14 +46,14 @@ namespace WLC
 
 
             services.AddDefaultIdentity<IdentityUser>()
-                    .AddDefaultUI(UIFramework.Bootstrap4)
+                //    .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(480);//You can set Time
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_0);
 
             services.AddMvc().AddRazorPagesOptions(options =>
             {
