@@ -19,35 +19,37 @@
     <link rel="stylesheet" href="~/css/fontawesome.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">WLC</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
+            <!-- Page Content -->
+                <div id="content">
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            <!-- Sidebar -->
+                            @{await Html.RenderPartialAsync("_MenuPartial");}
+
+                        </div>
+                        <div class="col-md-10" style="border-left:solid">
+                            <div class="container" style="margin-left: 0px; padding-left: 0px">
+                                <div class="row" style="background-color:#102452">
+                                    <div class="col-10">_</div>
+                                </div>
+                                <div class="row" style="background-color:lightgray">
+                                    <div class="col-10">_</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-10">
+                                        @RenderBody()
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+ 
+                </div>
+  
+  
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; @WLC.Services.Globals.GetActiveYear(Model.HttpContext) - WLC - <a asp-area="" asp-page="/Privacy">Privacy</a>
