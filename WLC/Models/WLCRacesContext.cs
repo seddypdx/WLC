@@ -14,6 +14,12 @@ namespace WLC.Models
             : base(options)
         {
         }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+
 
         public virtual DbSet<Cabins> Cabins { get; set; }
         public virtual DbSet<MemberStatuses> MemberStatuses { get; set; }
@@ -24,6 +30,8 @@ namespace WLC.Models
         public virtual DbSet<Years> Years { get; set; }
         public virtual DbSet<Member> Members { get; set; }
         public virtual DbSet<Checkin> Checkins { get; set; }
+        public virtual DbSet<GateCodes> GateCodes { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,6 +45,80 @@ namespace WLC.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
+
+            modelBuilder.Entity<AspNetRoles>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasMaxLength(128)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetUserClaims>(entity =>
+            {
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(128);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserClaims)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId");
+            });
+
+            modelBuilder.Entity<AspNetUserLogins>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey, e.UserId });
+
+                entity.Property(e => e.LoginProvider).HasMaxLength(128);
+
+                entity.Property(e => e.ProviderKey).HasMaxLength(128);
+
+                entity.Property(e => e.UserId).HasMaxLength(128);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserLogins)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId");
+            });
+
+            modelBuilder.Entity<AspNetUserRoles>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+
+                entity.Property(e => e.UserId).HasMaxLength(128);
+
+                entity.Property(e => e.RoleId).HasMaxLength(128);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.RoleId)
+                    .HasConstraintName("FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId");
+            });
+
+            modelBuilder.Entity<AspNetUsers>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasMaxLength(128)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.LockoutEndDateUtc).HasColumnType("datetime");
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(256);
+            });
+
 
             modelBuilder.Entity<Cabins>(entity =>
             {
@@ -63,6 +145,26 @@ namespace WLC.Models
                     .IsRequired()
                     .HasMaxLength(20);
             });
+
+            modelBuilder.Entity<GateCodes>(entity =>
+            {
+                entity.HasKey(e => e.GatecodeId);
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
 
             modelBuilder.Entity<Member>(entity =>
             {

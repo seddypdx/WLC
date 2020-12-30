@@ -1,50 +1,18 @@
-﻿ASP.NET Core MVC dependencies have been added to the project.
-(These dependencies include packages required to enable scaffolding)
+﻿Support for ASP.NET Core Identity was added to your project
+- The code for adding Identity to your project was generated under Areas/Identity.
 
-However you may still need to do make changes to your project.
+Configuration of the Identity related services can be found in the Areas/Identity/IdentityHostingStartup.cs file.
 
-1. Suggested changes to Startup class:
 
-    1.1 Add a constructor:
-        public IConfiguration Configuration { get; }
+The generated UI requires support for static files. To add static files to your app:
+1. Call app.UseStaticFiles() from your Configure method
 
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+To use ASP.NET Core Identity you also need to enable authentication. To authentication to your app:
+1. Call app.UseAuthentication() from your Configure method (after static files)
 
-    1.2 Add MVC services:
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Add framework services.
-            services.AddMvc();
-        }
+The generated UI requires MVC. To add MVC to your app:
+1. Call services.AddMvc() from your ConfigureServices method
+2. Call app.UseMvc() from your Configure method (after authentication)
 
-    1.3 Configure web app to use MVC routing:
+Apps that use ASP.NET Core Identity should also use HTTPS. To enable HTTPS see https://go.microsoft.com/fwlink/?linkid=848054.
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseStaticFiles();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
-        }
-
-2. Replace the project name and namespace in the newly scaffolded files:
-
-    2.1 The file _Layout.cshtml contains the string "AppName" in a few places. It can be globally replaced with the name of the app.
-
-    2.2 The file _ViewImports.cshtml contains the string "Root_Namespace". It should be replaced with the root namespace of the project.

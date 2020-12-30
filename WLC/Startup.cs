@@ -47,7 +47,7 @@ namespace WLC
 
             services.AddDefaultIdentity<IdentityUser>()
                 //    .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<WLCRacesContext>();
 
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(480);//You can set Time
