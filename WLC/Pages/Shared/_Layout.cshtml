@@ -24,12 +24,12 @@
                 <div id="content">
                     <div class="row">
 
-                        <div class="col-md-2">
+                        <div class="col-md-2 no-float">
                             <!-- Sidebar -->
                             @{await Html.RenderPartialAsync("_MenuPartial");}
 
                         </div>
-                        <div class="col-md-10" style="border-left:solid">
+                        <div class="col-md-10 no-float" style="border-left:solid">
                             <div class="container" style="margin-left: 0px; padding-left: 0px">
                                 <div class="row" style="background-color:#102452">
                                     <div class="col-10">_</div>
@@ -38,7 +38,7 @@
                                     <div class="col-10">_</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-10">
+                                    <div class="col-10" style="height:100%">
                                         @RenderBody()
                                     </div>
                                 </div>

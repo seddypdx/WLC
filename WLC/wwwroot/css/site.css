@@ -35,3 +35,30 @@ body {
         display: none;
     }
 }
+
+.row .no-float {
+    display: table-cell;
+    float: none;
+}
+
+
+#sidebar {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+    #sidebar a {
+        color: #445ACD;
+        font-weight:400;
+        margin-left:20px;
+    }
+
+    #sidebar p {
+        margin-left:4px;
+        color: #7D7D7D;
+        font-weight: bold;
+    }
+
+.sidebar-header{
+    margin-bottom:40px;
+}
