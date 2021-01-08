@@ -203,7 +203,7 @@ namespace WLC.Areas.Checkin.Pages
                 Response.Cookies.Append("MemberId", Checkin.MemberId.ToString(), option);
 
             }
-            catch (Exception ex)
+            catch
             {
 
             }
@@ -218,9 +218,8 @@ namespace WLC.Areas.Checkin.Pages
             if (string.IsNullOrEmpty(x))
                 return 0;
 
-            int memberId = 0;
 
-            if (int.TryParse(x, out memberId))
+            if (int.TryParse(x, out int memberId))
                 return memberId;
 
             return 0;
@@ -233,9 +232,8 @@ namespace WLC.Areas.Checkin.Pages
             if (string.IsNullOrEmpty(x))
                 return 0;
 
-            int cabinId = 0;
 
-            if (int.TryParse(x, out cabinId))
+            if (int.TryParse(x, out int cabinId))
                 return cabinId;
 
             return 0;

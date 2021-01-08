@@ -1,1 +1,3 @@
 Scaffold-DbContext "Server=(local);Database=WLCRaces;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+
+Scaffold-DbContext "Server=DESKTOP-6A7TUBO;Database=WLCRaces;uid=sa;password=cleo;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force

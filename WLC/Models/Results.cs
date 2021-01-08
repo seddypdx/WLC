@@ -16,8 +16,8 @@ namespace WLC.Models
         public string Ribbon { get; set; }
         public string Comments { get; set; }
 
-        public virtual Races Race { get; set; }
-        public virtual Racers Racer { get; set; }
-        public virtual Years YearNavigation { get; set; }
+        public Races Race { get; set; }
+        public Racers Racer { get; set; }
+        public Years YearNavigation { get; set; }
     }
 }

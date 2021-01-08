@@ -14,6 +14,6 @@ namespace WLC.Models
         public DateTime? LaborDayDate { get; set; }
         public string Notes { get; set; }
 
-        public virtual ICollection<Results> Results { get; set; }
+        public ICollection<Results> Results { get; set; }
     }
 }

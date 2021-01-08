@@ -28,10 +28,9 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="Areas\Notifications\Controllers\" />
-    <Folder Include="Areas\Notifications\Services\" />
+    <Folder Include="Areas\Notices\Controllers\" />
+    <Folder Include="Areas\Notices\Services\" />
     <Folder Include="Data\" />
-    <Folder Include="Models\" />
     <Folder Include="wwwroot\documents\" />
     <Folder Include="wwwroot\lib\jquery-validation\dist\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />

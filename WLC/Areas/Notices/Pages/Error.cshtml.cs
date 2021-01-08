@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
-namespace WLC.Areas.Identity.Pages
+namespace WLC.Areas.Notices.Pages
 {
     [AllowAnonymous]
     public class ErrorModel : PageModel

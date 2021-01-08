@@ -90,6 +90,7 @@ namespace WLC
             {
                 routes.MapAreaRoute("Races", "Races", "Races/{controller=Home}/{action=Index}/{id?}");
                 routes.MapAreaRoute("Checkin", "Checkin", "Checkin/{controller=Home}/{action=Index}/{id?}");
+                routes.MapAreaRoute("Notices", "Notices", "Checkin/{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapRoute(
                     name: "default",

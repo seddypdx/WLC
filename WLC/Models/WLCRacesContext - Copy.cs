@@ -1,48 +1,57 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace WLC.Models
 {
-    public partial class WLCRacesContext : DbContext
+    public partial class WLCRacesContext2 : IdentityDbContext<IdentityUser>
     {
-        public WLCRacesContext()
+        public WLCRacesContext2()
         {
         }
 
-        public WLCRacesContext(DbContextOptions<WLCRacesContext> options)
+        public WLCRacesContext2(DbContextOptions<WLCRacesContext> options)
             : base(options)
         {
+           // Database.EnsureCreated();
         }
+        //public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        //public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        //public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        //public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
+        //public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+
 
         public virtual DbSet<Cabins> Cabins { get; set; }
-        public virtual DbSet<Checkin> Checkins { get; set; }
-        public virtual DbSet<GateCodes> GateCodes { get; set; }
-        public virtual DbSet<Member> Members { get; set; }
         public virtual DbSet<MemberStatuses> MemberStatuses { get; set; }
-        public virtual DbSet<MemberTypes> MemberTypes { get; set; }
-        public virtual DbSet<NoticeQueueItems> NoticeQueueItems { get; set; }
-        public virtual DbSet<Notices> Notices { get; set; }
-        public virtual DbSet<NoticeStatuses> NoticeStatuses { get; set; }
-        public virtual DbSet<NoticeTypes> NoticeTypes { get; set; }
         public virtual DbSet<Racers> Racers { get; set; }
         public virtual DbSet<Races> Races { get; set; }
         public virtual DbSet<Results> Results { get; set; }
         public virtual DbSet<RibbonsInStock> RibbonsInStock { get; set; }
         public virtual DbSet<Years> Years { get; set; }
+        public virtual DbSet<Member> Members { get; set; }
+        public virtual DbSet<Checkin> Checkins { get; set; }
+        public virtual DbSet<GateCodes> GateCodes { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=DESKTOP-6A7TUBO;Database=WLCRaces;uid=sa;password=cleo;MultipleActiveResultSets=true");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           modelBuilder.Entity<Cabins>(entity =>
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
+
+
+            modelBuilder.Entity<Cabins>(entity =>
             {
                 entity.HasKey(e => e.CabinId);
 
@@ -59,21 +68,13 @@ namespace WLC.Models
                     .HasMaxLength(15);
             });
 
-            modelBuilder.Entity<Checkin>(entity =>
+            modelBuilder.Entity<MemberStatuses>(entity =>
             {
-                entity.HasKey(e => e.CheckinId);
+                entity.HasKey(e => e.MemberStatusId);
 
-                entity.Property(e => e.MemberId).HasColumnName("Member ID");
-
-                entity.Property(e => e.Note)
-                    .HasMaxLength(8000)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Member)
-                    .WithMany(p => p.Checkins)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Checkins__Member__42E1EEFE");
+                entity.Property(e => e.MemberStatus)
+                    .IsRequired()
+                    .HasMaxLength(20);
             });
 
             modelBuilder.Entity<GateCodes>(entity =>
@@ -95,6 +96,7 @@ namespace WLC.Models
                     .IsUnicode(false);
             });
 
+
             modelBuilder.Entity<Member>(entity =>
             {
                 entity.HasKey(e => e.MemberId);
@@ -102,95 +104,14 @@ namespace WLC.Models
 
             });
 
-
-            modelBuilder.Entity<MemberStatuses>(entity =>
+            modelBuilder.Entity<Checkin>(entity =>
             {
-                entity.HasKey(e => e.MemberStatusId);
 
-                entity.Property(e => e.MemberStatus)
-                    .IsRequired()
-                    .HasMaxLength(20);
-            });
+                entity.HasKey(e => e.CheckinId);
 
-            modelBuilder.Entity<MemberTypes>(entity =>
-            {
-                entity.HasKey(e => e.MemberTypeId);
+                entity.Property(e => e.MemberId).HasColumnName("Member ID");
 
-                entity.Property(e => e.MemberTypeId)
-                    .HasColumnName("MemberTypeID")
-                    .ValueGeneratedNever();
 
-                entity.Property(e => e.Category).HasMaxLength(25);
-
-                entity.Property(e => e.MemberDues).HasColumnType("money");
-
-                entity.Property(e => e.MemberType).HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<NoticeQueueItems>(entity =>
-            {
-                entity.HasKey(e => e.NoticeQueueItemId);
-
-                entity.Property(e => e.NoticeQueueItemId).ValueGeneratedNever();
-
-                entity.Property(e => e.DateLastChanged).HasColumnType("smalldatetime");
-
-                entity.Property(e => e.NotificationLocation).HasMaxLength(50);
-
-                entity.HasOne(d => d.Notice)
-                    .WithMany(p => p.NoticeQueueItems)
-                    .HasForeignKey(d => d.NoticeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_NoticeQueueItems_Notices");
-
-                entity.HasOne(d => d.NoticeStatus)
-                    .WithMany(p => p.NoticeQueueItems)
-                    .HasForeignKey(d => d.NoticeStatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_NoticeQueueItems_NoticeStatuses");
-            });
-
-            modelBuilder.Entity<Notices>(entity =>
-            {
-                entity.HasKey(e => e.NoticeId);
-
-                entity.Property(e => e.DateCreated).HasColumnType("smalldatetime");
-
-                entity.Property(e => e.DateToSend).HasColumnType("smalldatetime");
-
-                entity.HasOne(d => d.NoticeStatus)
-                    .WithMany(p => p.Notices)
-                    .HasForeignKey(d => d.NoticeStatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Notices_NoticeStatuses");
-
-                entity.HasOne(d => d.NoticeType)
-                    .WithMany(p => p.Notices)
-                    .HasForeignKey(d => d.NoticeTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Notices_NoticeTypes");
-            });
-
-            modelBuilder.Entity<NoticeStatuses>(entity =>
-            {
-                entity.HasKey(e => e.NoticeStatusId);
-
-                entity.Property(e => e.NoticeStatusId).ValueGeneratedNever();
-
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .HasMaxLength(20);
-            });
-
-            modelBuilder.Entity<NoticeTypes>(entity =>
-            {
-                entity.HasKey(e => e.NoticeTypeId);
-
-                entity.Property(e => e.NoticeTypeId).ValueGeneratedNever();
-
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .HasMaxLength(20);
             });
 
             modelBuilder.Entity<Racers>(entity =>

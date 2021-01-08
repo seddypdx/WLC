@@ -14,6 +14,6 @@ namespace WLC.Models
         public string CabinName { get; set; }
         public string CabinPhone { get; set; }
 
-        public virtual ICollection<Racers> Racers { get; set; }
+        public ICollection<Racers> Racers { get; set; }
     }
 }

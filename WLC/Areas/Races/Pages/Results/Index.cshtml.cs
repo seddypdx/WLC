@@ -16,7 +16,7 @@ namespace WLC.Areas.Races.Pages.Results
     public class ResultsModel : PageModel
     {
 
-        private WLCRacesContext _context;
+        private readonly WLCRacesContext _context;
         public SelectList RaceList;
         public SelectList CabinList;
         public SelectList MemberStatusList;
@@ -229,18 +229,18 @@ namespace WLC.Areas.Races.Pages.Results
 
             try
             {
-                if (addTeamRequest.raceId == 0)
+                if (addTeamRequest.RaceId == 0)
                     throw new Exception("Invalid Race");
 
-                var teamId = GetNextTeamId(addTeamRequest.raceId);
+                var teamId = GetNextTeamId(addTeamRequest.RaceId);
 
-                foreach (int racerId in addTeamRequest.racerIds)
+                foreach (int racerId in addTeamRequest.RacerIds)
                 {
                     var result = new WLC.Models.Results()
                     {
                         Place = 4,
                         TeamId = teamId,
-                        RaceId = addTeamRequest.raceId,
+                        RaceId = addTeamRequest.RaceId,
                         RacerId =racerId,
                         Year = Globals.GetActiveYear(HttpContext)
 
@@ -273,8 +273,8 @@ namespace WLC.Areas.Races.Pages.Results
         }
         public class AddTeamRequest
         {
-            public int raceId { get; set; }
-            public int[] racerIds { get; set; }
+            public int RaceId { get; set; }
+            public int[] RacerIds { get; set; }
         }
 
         public class SaveRacerRequest
