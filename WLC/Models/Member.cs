@@ -20,6 +20,11 @@ namespace WLC.Models
         public bool Deceased { get; set; }
         public string HomeCell { get; set; }
 
+        public string AspNetUserId { get; set; }
+
+        public bool NotifyOnEmergency { get; set; }
+        public bool NotifyOnInformation { get; set; }
+        public bool NotifyOnSocial { get; set; }
 
         public Cabins Cabin { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 body {
-    padding-top: 50px;
+    padding-top: 10px;
     padding-bottom: 20px;
 }
 
@@ -41,6 +41,24 @@ body {
     float: none;
 }
 
+.header-login {
+    padding-right: 20px;
+    font-weight: bold;
+    color: #7D7D7D;
+}
+.header-login span{
+        padding-left:15px;
+}
+
+.header-login form {
+        display:inline;
+    }
+
+#MainContent {
+    margin-left: 30px;
+}
+
+
 
 #sidebar {
     font-size: 12px;
@@ -52,6 +70,7 @@ body {
         font-weight:400;
         margin-left:20px;
     }
+
 
     #sidebar p {
         margin-left:4px;

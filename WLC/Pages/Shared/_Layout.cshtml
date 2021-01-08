@@ -19,7 +19,11 @@
     <link rel="stylesheet" href="~/css/fontawesome.css" />
 </head>
 <body>
-
+    <header>
+        <div style="float:right">
+    <partial name="_LoginPartial" />
+</div>
+    </header>
             <!-- Page Content -->
                 <div id="content">
                     <div class="row">
@@ -38,7 +42,7 @@
                                     <div class="col-10">_</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-10" style="height:100%">
+                                    <div id="MainContent" class="col-10">
                                         @RenderBody()
                                     </div>
                                 </div>
