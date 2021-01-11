@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WLC.Models
 {
@@ -11,10 +12,15 @@ namespace WLC.Models
         }
 
         public int NoticeId { get; set; }
+
+        [Display(Name = "Notice Type")]
         public int NoticeTypeId { get; set; }
+
         public string Message { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateToSend { get; set; }
+    
+        [Display(Name = "Notice Status")]
         public int NoticeStatusId { get; set; }
 
         public NoticeStatuses NoticeStatus { get; set; }

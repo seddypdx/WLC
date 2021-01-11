@@ -33,7 +33,7 @@ namespace WLC.Areas.Races.Services
                         {
                             TeamMembers = TeamGroup.ToList(),
                             Place = (int) TeamGroup.Max(x => x.Place),
-                            Members = TeamGroup.Count(x => x.Racer.MemberStatusId == (int) MemberStatusEnum.Member),
+                            Members = TeamGroup.Count(x => x.Racer.MemberStatusId == (int)Models.MemberStatusEnum.Member),
                             DisqualifiedCount = TeamGroup.Count(x => x.Comments == "Not Qualified")
                         };
 
@@ -84,7 +84,7 @@ namespace WLC.Areas.Races.Services
                     teamMember.Ribbon = team.Ribbon;
                     teamMember.PointsPlace = team.PointsPlace;
 
-                    if (team.DisqualifiedCount > 0 ||  teamMember.Racer.MemberStatusId != (int)MemberStatusEnum.Member || teamMember.Racer.GetAge(DateTime.Now) > 18)
+                    if (team.DisqualifiedCount > 0 ||  teamMember.Racer.MemberStatusId != (int)Models.MemberStatusEnum.Member || teamMember.Racer.GetAge(DateTime.Now) > 18)
                         teamMember.Points = 0;
                     else
                         teamMember.Points = race.GetPointsForRibon(teamMember.Ribbon);
@@ -121,7 +121,7 @@ namespace WLC.Areas.Races.Services
                         || ((entry.Race.RaceBoyOrGirl != entry.Racer.BoyOrGirl) && entry.Race.RaceBoyOrGirl != "b/g"))
                         entry.Comments = "Not Qualified";
                     else
-                        if (entry.Racer.MemberStatus.MemberStatusId != (int) MemberStatusEnum.Member)
+                        if (entry.Racer.MemberStatus.MemberStatusId != (int)Models.MemberStatusEnum.Member)
                            entry.Comments = entry.Racer.MemberStatus.MemberStatus;
 
 

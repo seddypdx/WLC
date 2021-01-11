@@ -7,6 +7,8 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Azure.Communication.Administration" Version="1.0.0-beta.3" />
+    <PackageReference Include="Azure.Communication.Sms" Version="1.0.0-beta.3" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.6" />
@@ -29,7 +31,6 @@
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Areas\Notices\Controllers\" />
-    <Folder Include="Areas\Notices\Services\" />
     <Folder Include="Data\" />
     <Folder Include="wwwroot\documents\" />
     <Folder Include="wwwroot\lib\jquery-validation\dist\" />

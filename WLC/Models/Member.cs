@@ -22,6 +22,7 @@ namespace WLC.Models
 
         public string AspNetUserId { get; set; }
 
+        public string EmailName { get; set; }
         public bool NotifyOnEmergency { get; set; }
         public bool NotifyOnInformation { get; set; }
         public bool NotifyOnSocial { get; set; }

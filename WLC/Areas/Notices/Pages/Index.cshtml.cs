@@ -1,27 +1,30 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WLC.Services;
+using Microsoft.EntityFrameworkCore;
+using WLC.Models;
 
 namespace WLC.Areas.Notices.Pages
 {
     public class IndexModel : PageModel
     {
-        [BindProperty]
-        public int ActiveYear { get; set; }
+        private readonly WLC.Models.WLCRacesContext _context;
 
-        public void OnGet()
+        public IndexModel(WLC.Models.WLCRacesContext context)
         {
-            ActiveYear = Globals.GetActiveYear(HttpContext);
+            _context = context;
         }
 
-        public void OnPost()
-        {
-            Globals.SetActiveYear(HttpContext, ActiveYear);
-        }
+        public IList<WLC.Models.Notices> Notices { get;set; }
 
+        public async Task OnGetAsync()
+        {
+            Notices = await _context.Notices
+                .Include(n => n.NoticeStatus)
+                .Include(n => n.NoticeType).ToListAsync();
+        }
     }
 }

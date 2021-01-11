@@ -16,4 +16,22 @@ namespace WLC.Models
         Inactive = 8
 
     }
+
+    public enum NoticeTypeEnum
+    {
+        Social = 10,
+        Informational = 20,
+        Emergency = 30
+ 
+    }
+
+    public enum NoticeStatusEnum
+    {
+        New = 10,
+        Submitted= 20,
+        InProcess = 30,
+        Completed= 40,
+        Error = 50
+
+    }
 }

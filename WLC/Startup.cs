@@ -14,6 +14,8 @@ using WLC.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WLC.Models;
+using WLC.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace WLC
 {
@@ -55,6 +57,16 @@ namespace WLC
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_0);
 
+            services.AddTransient<IEmailSender, EmailSender>(i =>
+           new EmailSender(
+               Configuration["EmailSender:Host"],
+               Configuration.GetValue<int>("EmailSender:Port"),
+               Configuration.GetValue<bool>("EmailSender:EnableSSL"),
+               Configuration["EmailSender:UserName"],
+               Configuration["EmailSender:Password"]
+           )
+       );
+
             services.AddMvc().AddRazorPagesOptions(options =>
             {
                 options.AllowAreas = true;
@@ -85,6 +97,7 @@ namespace WLC
             app.UseSession();
 
             app.UseAuthentication();
+
 
             app.UseMvc(routes =>
             {

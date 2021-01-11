@@ -1,0 +1,55 @@
+﻿@page
+@model WLC.Areas.Notices.Pages.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Notices</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Notices.NoticeId" />
+            <div class="form-group">
+                <label asp-for="Notices.NoticeTypeId" class="control-label"></label>
+                <select asp-for="Notices.NoticeTypeId" class="form-control" asp-items="ViewBag.NoticeTypeId"></select>
+                <span asp-validation-for="Notices.NoticeTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notices.Message" class="control-label"></label>
+                <input asp-for="Notices.Message" class="form-control" />
+                <span asp-validation-for="Notices.Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notices.DateCreated" class="control-label"></label>
+                <input asp-for="Notices.DateCreated" class="form-control" />
+                <span asp-validation-for="Notices.DateCreated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notices.DateToSend" class="control-label"></label>
+                <input asp-for="Notices.DateToSend" class="form-control" />
+                <span asp-validation-for="Notices.DateToSend" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notices.NoticeStatusId" class="control-label"></label>
+                <select asp-for="Notices.NoticeStatusId" class="form-control" asp-items="ViewBag.NoticeStatusId"></select>
+                <span asp-validation-for="Notices.NoticeStatusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

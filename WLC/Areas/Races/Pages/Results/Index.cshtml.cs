@@ -98,7 +98,7 @@ namespace WLC.Areas.Races.Pages.Results
                                 && x.GetAge(DateTime.Now) <= ActiveRace.MaximumAge
                                 && (x.BoyOrGirl == ActiveRace.RaceBoyOrGirl || ActiveRace.RaceBoyOrGirl == "b/g")
                                 && !_context.Results.Any(p => p.RaceId==ActiveRace.RaceId && p.RacerId == x.RacerId && p.Year ==2019)
-                                && x.MemberStatusId != (int) MemberStatusEnum.Inactive
+                                && x.MemberStatusId != (int)MemberStatusEnum.Inactive
                                 )
                             .Include(x => x.Cabin)
                             .OrderBy(x => x.LastName);

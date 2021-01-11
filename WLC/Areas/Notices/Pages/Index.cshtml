@@ -1,19 +1,60 @@
 ﻿@page
 @model WLC.Areas.Notices.Pages.IndexModel
+
 @{
+    ViewData["Title"] = "Index";
 }
 
+<h2>Index</h2>
 
-<div>
-    <h1 class="display-4">Manage NociesNotices </h1>
-
-    <p>Notice  this</p>
-      </div>
-
-<div>
-    <form id="SetYear" asp-page="Index">
-        <input asp-for="ActiveYear" />
-        <input type="submit" />
-     </form>
-
-</div>
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Notices[0].Message)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notices[0].DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notices[0].DateToSend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notices[0].NoticeStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notices[0].NoticeType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Notices) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateToSend)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoticeStatus.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoticeType.Description)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.NoticeId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.NoticeId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.NoticeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

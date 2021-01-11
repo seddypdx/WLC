@@ -131,7 +131,6 @@ namespace WLC.Models
             {
                 entity.HasKey(e => e.NoticeQueueItemId);
 
-                entity.Property(e => e.NoticeQueueItemId).ValueGeneratedNever();
 
                 entity.Property(e => e.DateLastChanged).HasColumnType("smalldatetime");
 
