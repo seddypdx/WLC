@@ -33,12 +33,21 @@ namespace WLC.Services
         // Use our configuration to send the email by using SmtpClient
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var client = new SmtpClient(host, port)
-            {
-                Credentials = new NetworkCredential(userName, password),
-                EnableSsl = enableSSL,
-                DeliveryMethod = SmtpDeliveryMethod.Network
-            };
+            //var client = new SmtpClient(host, port)
+            //{
+            //    Credentials = new NetworkCredential(userName, password),
+            //    EnableSsl = enableSSL,
+            //    DeliveryMethod = SmtpDeliveryMethod.Network,
+            //    UseDefaultCredentials = false
+
+            //};
+
+            SmtpClient client = new SmtpClient(host);
+
+            NetworkCredential Credentials = new NetworkCredential(userName, password);
+            client.Credentials = Credentials;
+            //smtp.Send(mail);
+
             return client.SendMailAsync(
                 new MailMessage(userName, email, subject, htmlMessage) { IsBodyHtml = true }
             );

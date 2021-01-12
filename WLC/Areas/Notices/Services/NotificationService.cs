@@ -145,7 +145,7 @@ namespace WLC.Areas.Notices.Services
         {
 
               //message.CC.Add(new MailAddress("carboncopy@foo.bar.com"));
-              emailSender.SendEmailAsync(email,  "Wauna Lake Notice",  noticeMessage);
+             await emailSender.SendEmailAsync(email,  "Wauna Lake Notice",  noticeMessage);
 
 
 

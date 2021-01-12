@@ -1,0 +1,51 @@
+﻿@page
+@model NotificationSettingsModel
+@{
+    ViewData["Title"] = "Notification Settings";
+    ViewData["ActivePage"] = ManageNavPages.NotificationSettings;
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<div class="row">
+    <div class="col-md-6">
+        <p>Manage your notification settings here.</p>
+
+        <form asp-page="UpdateNotificationsData" method="post" class="form-group">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input readonly asp-for="Email" class="form-control" />
+                <input type="checkbox" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <input type="checkbox" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="NotifyOnSocial" />
+                <label class="control-label">Notify Me On Social Messages</label>
+                <span asp-validation-for="NotifyOnSocial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="NotifyOnInformation" />
+                <label class="control-label">Notify Me On Information Messages</label>
+                <span asp-validation-for="NotifyOnInformation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="NotifyOnEmergency" />
+                <label class="control-label">Notify Me On Emergency Messages</label>
+                <span asp-validation-for="NotifyOnEmergency" class="text-danger"></span>
+            </div>
+            <button class="btn btn-default" type="submit">Save</button>
+        </form>
+ 
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

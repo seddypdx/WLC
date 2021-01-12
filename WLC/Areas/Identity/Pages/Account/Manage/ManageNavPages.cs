@@ -19,6 +19,7 @@ namespace WLC.Areas.Identity.Pages.Account.Manage
         public static string ExternalLogins => "ExternalLogins";
 
         public static string PersonalData => "PersonalData";
+        public static string NotificationSettings => "NotificationSettings";
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
@@ -33,6 +34,7 @@ namespace WLC.Areas.Identity.Pages.Account.Manage
         public static string ExternalLoginsNavClass(ViewContext viewContext) => PageNavClass(viewContext, ExternalLogins);
 
         public static string PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
+        public static string NotificationSettingsNavClass(ViewContext viewContext) => PageNavClass(viewContext, NotificationSettings);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
     
