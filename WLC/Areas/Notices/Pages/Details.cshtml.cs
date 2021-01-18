@@ -29,7 +29,9 @@ namespace WLC.Areas.Notices.Pages
 
             Notices = await _context.Notices
                 .Include(n => n.NoticeStatus)
+                .Include(n => n.NoticeQueueItems).ThenInclude(x => x.NoticeStatus)
                 .Include(n => n.NoticeType).FirstOrDefaultAsync(m => m.NoticeId == id);
+
 
             if (Notices == null)
             {

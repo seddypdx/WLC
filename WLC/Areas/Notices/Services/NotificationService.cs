@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WLC.Models;
 
@@ -17,31 +18,163 @@ namespace WLC.Areas.Notices.Services
 
         public static void QueueNotification(WLC.Models.WLCRacesContext context, WLC.Models.Notices Notice)
         {
-            foreach (var member in context.Members.Where(x => x.NotifyOnSocial))
+
+            if (Notice.NoticeTypeId == (int)NoticeTypeEnum.Social)
+                 NotifyForSocial(context, Notice);
+
+            if (Notice.NoticeTypeId == (int)NoticeTypeEnum.Informational)
+                NotifyForInformation(context, Notice);
+
+            if (Notice.NoticeTypeId == (int)NoticeTypeEnum.Emergency)
+                NotifyForEmergency(context, Notice);
+
+
+
+        }
+        private static void NotifyForInformation(WLCRacesContext context, Models.Notices Notice)
+        {
+            foreach (var member in context.Members.Where(x => x.NotifyOnInformationText))
             {
-                var queueItem = new NoticeQueueItems()
+                try
                 {
-                    NoticeId = Notice.NoticeId,
-                    Notice = Notice,
-                    DateLastChanged = DateTime.Now,
-                    NoticeStatusId = (int)NoticeStatusEnum.New,
-                    NotificationLocation = CalculateLocationToSend(member)
-                };
-                context.Add(queueItem);
+                    var queueItem = new NoticeQueueItems()
+                    {
+                        NoticeId = Notice.NoticeId,
+                        Notice = Notice,
+                        DateLastChanged = DateTime.Now,
+                        NoticeStatusId = (int)NoticeStatusEnum.New,
+                        NotificationLocation = GetMemeberTextEmail(member)
+                    };
+                    context.Add(queueItem);
+                }
+                catch (Exception ex)
+                {
+                    //log error here
+                }
+            }
+
+            foreach (var member in context.Members.Where(x => x.NotifyOnInformationEmail))
+            {
+                try
+                {
+                    var queueItem = new NoticeQueueItems()
+                    {
+                        NoticeId = Notice.NoticeId,
+                        Notice = Notice,
+                        DateLastChanged = DateTime.Now,
+                        NoticeStatusId = (int)NoticeStatusEnum.New,
+                        NotificationLocation = member.EmailName
+                    };
+                    context.Add(queueItem);
+                }
+                catch (Exception ex)
+                {
+                    // log error here
+                }
+            }
+
+            context.SaveChanges();
+        }
+        private static void NotifyForEmergency(WLCRacesContext context, Models.Notices Notice)
+        {
+            foreach (var member in context.Members.Where(x => x.NotifyOnEmergencyText))
+            {
+                try
+                {
+                    var queueItem = new NoticeQueueItems()
+                    {
+                        NoticeId = Notice.NoticeId,
+                        Notice = Notice,
+                        DateLastChanged = DateTime.Now,
+                        NoticeStatusId = (int)NoticeStatusEnum.New,
+                        NotificationLocation = GetMemeberTextEmail(member)
+                    };
+                    context.Add(queueItem);
+                }
+                catch (Exception ex)
+                {
+                    //log error here
+                }
+            }
+
+            foreach (var member in context.Members.Where(x => x.NotifyOnEmergencyEmail))
+            {
+                try
+                {
+                    var queueItem = new NoticeQueueItems()
+                    {
+                        NoticeId = Notice.NoticeId,
+                        Notice = Notice,
+                        DateLastChanged = DateTime.Now,
+                        NoticeStatusId = (int)NoticeStatusEnum.New,
+                        NotificationLocation = member.EmailName
+                    };
+                    context.Add(queueItem);
+                }
+                catch (Exception ex)
+                {
+                    // log error here
+                }
             }
 
             context.SaveChanges();
         }
 
-        private static string CalculateLocationToSend(Member member)
+        private static void NotifyForSocial(WLCRacesContext context, Models.Notices Notice)
+        {
+            foreach (var member in context.Members.Where(x => x.NotifyOnSocialText))
+            {
+                try
+                {
+                    var queueItem = new NoticeQueueItems()
+                    {
+                        NoticeId = Notice.NoticeId,
+                        Notice = Notice,
+                        DateLastChanged = DateTime.Now,
+                        NoticeStatusId = (int)NoticeStatusEnum.New,
+                        NotificationLocation = GetMemeberTextEmail(member)
+                    };
+                    context.Add(queueItem);
+                }
+                catch (Exception ex)
+                {
+                    //log error here
+                }
+            }
+
+            foreach (var member in context.Members.Where(x => x.NotifyOnSocialEmail))
+            {
+                try
+                {
+                    var queueItem = new NoticeQueueItems()
+                    {
+                        NoticeId = Notice.NoticeId,
+                        Notice = Notice,
+                        DateLastChanged = DateTime.Now,
+                        NoticeStatusId = (int)NoticeStatusEnum.New,
+                        NotificationLocation = member.EmailName
+                    };
+                    context.Add(queueItem);
+                }
+                catch (Exception ex)
+                {
+                    // log error here
+                }
+            }
+
+            context.SaveChanges();
+        }
+
+        public static string GetMemeberTextEmail(Member member)
         {
             var carrier = "ATT";
-            var preference = "xxCellPhone"; // this to be worked out later, add preference to memeber
 
-            if (preference == "CellPhone")
-               return  $"{member.HomeCell}@{GetCarrierSuffix(carrier)}";
+            Regex regexObj = new Regex(@"[^\d]");
+            var phoneOnly = regexObj.Replace(member.HomeCell, "");
 
-            return member.EmailName; // member.Cabin;
+
+            return $"{phoneOnly}@{GetCarrierSuffix(carrier)}";
+
         }
 
         private static string GetCarrierSuffix(string carrier)

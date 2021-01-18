@@ -5,44 +5,48 @@
     ViewData["ActivePage"] = ManageNavPages.NotificationSettings;
 }
 
-<h4>@ViewData["Title"]</h4>
+@*<h4>@ViewData["Title"]</h4>*@
+@Html.Partial("_StatusMessage", Model.StatusMessage)
 
 <div class="row">
     <div class="col-md-6">
-        <p>Manage your notification settings here.</p>
 
-        <form asp-page="UpdateNotificationsData" method="post" class="form-group">
+        <form id="NotificationForm" method="post" class="form-group">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input readonly asp-for="Email" class="form-control" />
-                <input type="checkbox" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label class="control-label">Email </label>
+                <input readonly asp-for="LoggedOnMemeber.EmailName" class="form-control" />
+                <button id="email-verification" type="submit" asp-page-handler="SendTestEmail" class="btn btn-link">Send Test email</button>
+
+
+                <span asp-validation-for="LoggedOnMemeber.EmailName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <input type="checkbox" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                <label class="control-label">Text Phone Number</label>
+                <input asp-for="LoggedOnMemeber.HomeCell" class="form-control" />
+                <button id="text-verification" type="submit" asp-page-handler="SendTestEmail" class="btn btn-link">Send Test Text</button>
+                <span asp-validation-for="LoggedOnMemeber.HomeCell" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input asp-for="NotifyOnSocial" />
-                <label class="control-label">Notify Me On Social Messages</label>
-                <span asp-validation-for="NotifyOnSocial" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input asp-for="NotifyOnInformation" />
-                <label class="control-label">Notify Me On Information Messages</label>
-                <span asp-validation-for="NotifyOnInformation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input asp-for="NotifyOnEmergency" />
-                <label class="control-label">Notify Me On Emergency Messages</label>
-                <span asp-validation-for="NotifyOnEmergency" class="text-danger"></span>
-            </div>
+
+            <fieldset>
+                <legend>For Social messages notify me via</legend>
+                <div> <lable class="control-label"><input asp-for="LoggedOnMemeber.NotifyOnSocialEmail" /> Email </lable></div>
+                <div><lable class="control-label"><input asp-for="LoggedOnMemeber.NotifyOnSocialText" /> Text</lable></div>
+            </fieldset>
+            <fieldset>
+                <legend>For Informational messages notify me via</legend>
+                <div> <lable class="control-label"><input asp-for="LoggedOnMemeber.NotifyOnInformationEmail" /> Email </lable></div>
+                <div><lable class="control-label"><input asp-for="LoggedOnMemeber.NotifyOnInformationText" /> Text</lable></div>
+            </fieldset>
+            <fieldset>
+                <legend>For Emergency messages notify me via</legend>
+                <div> <lable class="control-label"><input asp-for="LoggedOnMemeber.NotifyOnEmergencyEmail" /> Email </lable></div>
+                <div><lable class="control-label"><input asp-for="LoggedOnMemeber.NotifyOnEmergencyText" /> Text</lable></div>
+            </fieldset>
+
             <button class="btn btn-default" type="submit">Save</button>
         </form>
- 
+
     </div>
 </div>
 

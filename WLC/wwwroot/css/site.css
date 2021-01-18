@@ -36,10 +36,8 @@ body {
     }
 }
 
-.row .no-float {
-    display: table-cell;
-    float: none;
-}
+
+
 
 .header-login {
     padding-right: 20px;
@@ -63,21 +61,85 @@ body {
 #sidebar {
     font-size: 12px;
     font-weight: bold;
+    background-color: transparent;
+    border-color: transparent;
 }
 
-    #sidebar a {
-        color: #445ACD;
-        font-weight:400;
-        margin-left:20px;
-    }
 
 
-    #sidebar p {
-        margin-left:4px;
+#sidebar p {
+        margin-left: 4px;
         color: #7D7D7D;
         font-weight: bold;
+
     }
+
+ #sidebar legend {
+        margin-left: 4px;
+        color: #7D7D7D;
+        font-weight: bold;
+        margin-bottom:0;
+    }
+
+    #sidebar nav li a {
+        padding: 0px 0px;
+        padding-left: 30px;
+        font-weight: 400;
+        float: none;
+        color:#445ACD;
+    }
+
+    #sidebar nav li {
+        float: none;
+    }
+
+@media screen and (min-width: 807px) {
+    .fixedSidebar {
+        display: table-cell;
+        width: 330px;
+        color:green;
+        float:none;
+    }
+    .row .no-float {
+        display: table-cell;
+        float: none;
+    }
+}
+
+@media screen and (max-width: 807px) {
+    .fixedSidebar {
+     color:red;
+    }
+    #MainContainer{
+        float:none;
+    }
+}
 
 .sidebar-header{
     margin-bottom:40px;
 }
+
+#NotificationForm  fieldset{
+    margin-bottom:20px;
+}
+
+    #NotificationForm fieldset div {
+        margin-left: 30px;
+    }
+
+.nav-item a {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+@media (min-width: 807px) {
+    .navbar-nav > li > a {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+}
+
+.navbar-toggle {
+   background-color:lightgray;
+}
+

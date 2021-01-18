@@ -67,6 +67,8 @@ namespace WLC.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            _logger.LogDebug($"Signinmanager {_signInManager.UserManager.ToString()}");
+
             returnUrl = returnUrl ?? Url.Content("~/");
 
             if (ModelState.IsValid)

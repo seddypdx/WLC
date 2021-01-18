@@ -67,7 +67,7 @@ namespace WLC.Areas.Notices.Pages
             {
                 await _context.SaveChangesAsync();
 
-                if (Resend)
+               // if (Resend)
                 {
                     // for now just process on save
                     NotificationService.QueueNotification(_context, Notices);
@@ -76,7 +76,6 @@ namespace WLC.Areas.Notices.Pages
 
                 }
 
-                SendTestEmail();
             }
             catch (DbUpdateConcurrencyException)
             {

@@ -2,10 +2,10 @@
 @model WLC.Areas.Notices.Pages.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Notices";
 }
 
-<h2>Index</h2>
+<h2>Notices</h2>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -32,7 +32,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Notices) {
+@foreach (var item in Model.Notices.OrderByDescending(x => x.DateToSend)) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Message)
