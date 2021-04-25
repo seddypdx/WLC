@@ -16,36 +16,37 @@
                   crossorigin="anonymous"
                   integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
         </environment>*@
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/fontawesome.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/legacy.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fontawesome.css" asp-append-version="true"/>
 </head>
 <body>
   
             <!-- Page Content -->
     <div id="content">
-        <div class="row">
-            <div class="col-md-5" style="text-align:left">
+        @*<div class="row">
+            <div class="col-md-12" style="text-align:right">
                 <partial name="_LoginPartial" />
             </div>
-            <div class="col-md-7" style="text-align:right">
-            </div>
-        </div>
+  
+        </div>*@
 
             <div class="row">
-
                 <div class="fixedSidebar col-md-2">
                     <!-- Sidebar -->
                     @{await Html.RenderPartialAsync("_MenuPartial");}
 
                 </div>
-                <div id="MainContainer" class="col-md-10 no-float" style="border-left:solid">
+                <div id="MainContainer-legacy" class="col-md-10 no-float legacy-main-continer" style="border-left:solid">
                     <div class="container" style="margin-left: 0px; padding-left: 0px">
-                        <div class="row" style="background-color:#102452">
-                            <div class="col-10" style="width:100%">_</div>
+                        <div class="row legacy-titlebar">
+                            <div class="col-md-5">Wauna Lake Club</div>
+                            <div class="col-md-7" style="text-align:right">
+                                <partial name="_LoginPartial" />
+                            </div>
+
                         </div>
-                        <div class="row" style="background-color:lightgray">
-                            <div class="col-10">_</div>
-                        </div>
+                      
                         <div class="row">
                             <div id="MainContent" class="col-10">
                                 @RenderBody()

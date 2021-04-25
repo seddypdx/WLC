@@ -63,9 +63,13 @@ body {
     font-weight: bold;
     background-color: transparent;
     border-color: transparent;
+    font-family: verdana,arial,helvetica,sans-serif;
 }
 
 
+#sidebar fieldset{
+    margin-top:15px;
+}
 
 #sidebar p {
         margin-left: 4px;
@@ -74,24 +78,40 @@ body {
 
     }
 
- #sidebar legend {
+    #sidebar legend {
         margin-left: 4px;
         color: #7D7D7D;
         font-weight: bold;
-        margin-bottom:0;
+        margin-bottom: 0;
+        font-size: 12px;
+        font-weight: 700;
+        border-bottom:0;
     }
 
     #sidebar nav li a {
         padding: 0px 0px;
-        padding-left: 30px;
+        padding-left: 20px;
         font-weight: 400;
         float: none;
-        color:#445ACD;
+        color: #445ACD;
+        font-size: 12px;
+        line-height: normal;
     }
 
-    #sidebar nav li {
-        float: none;
+    #sidebar nav li a:hover {
+        color: #CC0000;
     }
+
+
+#sidebar nav li {
+    float: none;
+}
+
+#sidebar nav {
+    padding-left:0px;
+}
+
+
 
 @media screen and (min-width: 807px) {
     .fixedSidebar {
@@ -143,3 +163,21 @@ body {
    background-color:lightgray;
 }
 
+div.inner-container {
+    background-color: #FFFFFF;
+    /*	color: #000000; */
+    border-left: 0px solid #A0A0A0;
+    border-right: 1px solid #A0A0A0;
+    border-top: 0px solid #A0A0A0;
+    border-bottom: 1px solid #A0A0A0;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+#bs-example-navbar-collapse-1
+{
+    padding-left:0px;
+}

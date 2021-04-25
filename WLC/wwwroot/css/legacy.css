@@ -1,0 +1,136 @@
+﻿
+.legacy-titlebar {
+    background-color: #102452;
+    color: #EAEAEA;
+    FONT-SIZE: 16px;
+    FONT-WEIGHT: 600;
+    border-bottom: 1px solid #000000;
+    padding-left: 14px;
+}
+
+.legacy-sub-titlebar {
+    background-color: #DDDDDD;
+    color: #DFDFDF;
+    FONT-SIZE: 12px;
+    FONT-WEIGHT: 600;
+    border-bottom: 2px solid #7F7F7F;
+    padding-left: 22px;
+}
+
+#MainContainer-legacy {
+    background-color: #DDDDDD;
+    border: 1px solid #000000
+}
+
+
+
+a.navigate:visited {
+    color: #445ACD;
+    TEXT-DECORATION: none
+}
+
+a.navigate:active {
+    color: #445ACD;
+    TEXT-DECORATION: none
+}
+
+a.navigate:link {
+    color: #445ACD;
+    TEXT-DECORATION: none
+}
+
+a.navigate:hover {
+    color: #CC0000;
+    TEXT-DECORATION: Bold
+}
+
+a.navigate_2:visited {
+    color: #445ACD;
+    TEXT-DECORATION: none
+}
+
+a.navigate_2:active {
+    color: #445ACD;
+    TEXT-DECORATION: none
+}
+
+a.navigate_2:link {
+    color: #445ACD;
+    TEXT-DECORATION: none
+}
+
+a.navigate_2:hover {
+    color: #CC0000;
+    TEXT-DECORATION: underline
+}
+
+a.navigate_main:visited {
+    color: #102452;
+    FONT-FAMILY: verdana,arial,helvetica,sans-serif;
+    FONT-SIZE: 12px;
+    FONT-WEIGHT: 700;
+    TEXT-DECORATION: none
+}
+
+a.navigate_main:active {
+    color: #102452;
+    FONT-FAMILY: verdana,arial,helvetica,sans-serif;
+    FONT-SIZE: 12px;
+    FONT-WEIGHT: 700;
+    TEXT-DECORATION: none
+}
+
+a.navigate_main:link {
+    color: #102452;
+    FONT-FAMILY: verdana,arial,helvetica,sans-serif;
+    FONT-SIZE: 12px;
+    FONT-WEIGHT: 700;
+    TEXT-DECORATION: none
+}
+
+a.navigate_main:hover {
+    color: #445ADD;
+    FONT-FAMILY: verdana,arial,helvetica,sans-serif;
+    FONT-SIZE: 12px;
+    FONT-WEIGHT: 700;
+    TEXT-DECORATION: underline
+}
+
+
+a.navigate_bottom:visited {
+    color: #0000CC;
+    FONT-FAMILY: verdana,arial,helvetica,sans-serif;
+    FONT-SIZE: 11px;
+    FONT-WEIGHT: 400;
+}
+
+a.navigate_bottom:active {
+    color: #0000CC;
+    FONT-FAMILY: verdana,arial,helvetica,sans-serif;
+    FONT-SIZE: 11px;
+    FONT-WEIGHT: 400;
+}
+
+a.navigate_bottom:link {
+    color: #0000CC;
+    FONT-FAMILY: verdana,arial,helvetica,sans-serif;
+    FONT-SIZE: 11px;
+    FONT-WEIGHT: 400;
+}
+
+a.navigate_bottom:hover {
+    color: #CC0000;
+    FONT-FAMILY: verdana,arial,helvetica,sans-serif;
+    FONT-SIZE: 11px;
+    FONT-WEIGHT: 400;
+}
+
+
+h2 {
+    margin-left: 5;
+    COLOR: #102452;
+    FONT-FAMILY: verdana,arial,helvetica,sans-serif;
+    FONT-SIZE: 13px;
+    FONT-WEIGHT: 450px;
+    margin-right: 10px
+}
