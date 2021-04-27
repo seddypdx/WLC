@@ -53,6 +53,19 @@ namespace WLC
                 .AddEntityFrameworkStores<ApplicationDbContext>(
                 );
 
+              services.AddAuthorization(options =>
+            {
+
+                options.AddPolicy("Admin", policy => policy.RequireAssertion(
+                                 context => context.User.HasClaim(claim => claim.Type == "Admin" )                                           )
+                                 );
+
+                options.AddPolicy("RaceOfficial", policy => policy.RequireAssertion(
+                   context => context.User.HasClaim(claim => claim.Type == "RaceOfficial"))
+                   );
+
+            });
+
 
             services.AddDbContext<WLCRacesContext>(options =>
                   options.UseSqlServer(

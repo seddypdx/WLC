@@ -78,6 +78,9 @@ namespace WLC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    // if we logged in set the cookie for the legacy site
+                    Response.Cookies.Append("v79605","OK");
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
