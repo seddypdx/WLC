@@ -14,7 +14,7 @@
         <form id="NotificationForm" method="post" class="form-group">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label class="control-label">Email </label>
+                <label class="control-label">Notification Email </label>
                 <input readonly asp-for="LoggedOnMemeber.EmailName" class="form-control" />
                 <button id="email-verification" type="submit" asp-page-handler="SendTestEmail" class="btn btn-link">Send Test email</button>
 
@@ -22,7 +22,7 @@
                 <span asp-validation-for="LoggedOnMemeber.EmailName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Text Phone Number</label>
+                <label class="control-label">Text Notification Number</label>
                 <input asp-for="LoggedOnMemeber.HomeCell" class="form-control" />
                 <button id="text-verification" type="submit" asp-page-handler="SendTestEmail" class="btn btn-link">Send Test Text</button>
                 <span asp-validation-for="LoggedOnMemeber.HomeCell" class="text-danger"></span>

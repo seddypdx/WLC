@@ -1,5 +1,9 @@
 @using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
+
+@if (SignInManager.IsSignedIn(User)){
 <nav id="sidebar" class="navbar-inverse navbar-left" role="navigation">
     <nav class="container-fluid">
         <div class="navbar-header">
@@ -12,7 +16,7 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <div class="sidebar-header">
-                <a asp-area="" asp-page="Index"> <img src="~/images/WaunaLake002a.jpg" /></a>  
+                <a asp-area="" asp-page="Index"> <img src="~/images/WaunaLake002a.jpg" /></a>
             </div>
 
             <fieldset>
@@ -68,11 +72,11 @@
                 </ul>
             </fieldset>
         </div>
-  
+
 
 
     </nav>
 </nav>
-
+}
 
 

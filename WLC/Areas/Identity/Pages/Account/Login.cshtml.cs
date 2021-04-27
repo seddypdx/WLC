@@ -79,7 +79,8 @@ namespace WLC.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     // if we logged in set the cookie for the legacy site
-                    Response.Cookies.Append("v79605","OK");
+                    Response.Cookies.Append("v79605", "OK");
+                    Response.Cookies.Append("PERSONAL_LOGIN", Input.Email);
 
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);

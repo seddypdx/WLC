@@ -32,6 +32,9 @@ namespace WLC.Areas.Identity.Pages.Account
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
+                Response.Cookies.Append("v79605", "NOT");
+                Response.Cookies.Append("PERSONAL_LOGIN", "");
+
                 return LocalRedirect(returnUrl);
             }
             else

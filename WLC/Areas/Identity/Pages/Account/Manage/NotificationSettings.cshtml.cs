@@ -60,7 +60,7 @@ namespace WLC.Areas.Identity.Pages.Account.Manage
 
         private async Task<Member> GetMemberFromUser(IdentityUser user)
         {
-            var member = _context.Members.Where(x => x.AspNetUserId == user.Id).FirstOrDefault();
+            var member =  _context.Members.Where(x => x.AspNetUserId == user.Id).FirstOrDefault();
 
             if (member != null)
                 return member;
